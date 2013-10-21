@@ -1,7 +1,9 @@
+/// <reference path="KiiUser.ts" />
+
 module Kii {
-    interface AppAPI {
-        login(userIdentifier : string, password : string);
-        loginAsAdmin(clientId : string, clientSecret : string);
+    export interface AppAPI {
+        login(userIdentifier : string, password : string, callback : UserCallback);
+        loginAsAdmin(clientId : string, clientSecret : string, callback : UserCallback);
 
         // APIs
         userAPI();
@@ -10,5 +12,10 @@ module Kii {
         objectAPI();
         aclAPI();
         topicAPI();  
+    }
+    
+    export interface UserCallback {
+	success : (user : KiiUser) => void;
+	error : (status : number, body : any) => void;
     }
 }
