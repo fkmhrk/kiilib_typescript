@@ -63,6 +63,34 @@ module Kii {
 		}
 	    });
 	}
+
+	signUp(info : any, password : string, callback : UserCallback) {
+	    info['password'] = password;
+	    
+	    var c : KiiContext = this.context;
+	    var url = c.getServerUrl() +
+		'/apps/'+ c.getAppId() +
+		'/users';
+		
+	    var client : HttpClient = c.getNewClient();
+	    client.setUrl(url);
+	    client.setMethod('POST');
+	    client.setKiiHeader(c, false);
+	    client.setContentType('application/json');
+
+	    var resp = client.sendJson(info, {
+	        onReceive : (status : number, headers : any, body : any) => {
+		    if (callback.success === undefined) { return; }
+		    var id = body['userID'];
+		    callback.success(new KiiUser(id));
+		},
+		onError : (status : number, body : any) => {
+		    if (callback.error === undefined) { return; }		    
+		    callback.error(status, body);
+		}
+	    });	    
+	}
+	
         // APIs
         userAPI() {}
         groupAPI() : GroupAPI {

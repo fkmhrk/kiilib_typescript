@@ -11,6 +11,8 @@ module Kii {
         login(userIdentifier : string, password : string, callback : UserCallback);
         loginAsAdmin(clientId : string, clientSecret : string, callback : UserCallback);
 
+	signUp(info : any, password : string, callback : UserCallback);
+
         // APIs
         userAPI();
         groupAPI() : GroupAPI;
