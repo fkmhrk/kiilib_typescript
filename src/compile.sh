@@ -1,4 +1,5 @@
-tsc KiiContext.ts KiiUser.ts \
+tsc KiiContext.ts KiiApp.ts \
+KiiUser.ts \
 KiiGroup.ts \
 KiiBucket.ts \
 KiiObject.ts \

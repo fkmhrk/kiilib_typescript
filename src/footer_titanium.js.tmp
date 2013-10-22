@@ -1,4 +1,5 @@
 exports.KiiContext = Kii.KiiContext;
+exports.KiiApp = Kii.KiiApp;
 exports.KiiUser = Kii.KiiUser;
 exports.KiiGroup = Kii.KiiGroup;
 exports.KiiBucket = Kii.KiiBucket;
