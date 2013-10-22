@@ -36,7 +36,7 @@ module jquery {
 	}
 
 	sendJson(json : any, callback : Kii.HttpClientCallback) {
-	    $.ajax({
+	    var data = {
 		url : this.url,
 		type : this.method,
 		headers : this.headers,
@@ -44,19 +44,31 @@ module jquery {
 		scriptCharset: 'utf-8',
 		data : JSON.stringify(json),
 		processData : false
-	    }).done(function(data_, status, data){
-		callback.onReceive(data.status,
-				   data.getAllResponseHeaders(),
-				   JSON.parse(data.responseText));
-	    }).fail(function(data){
-		console.log("fail");		
-		console.log("status:" + data.status);
-		console.log("statusText:" + data.statusText);
-		console.log("body:" + data.responseText);		
-	    });
+	    };
+	    this.sendRequest(data, callback);
 	}
-		   
 
-	send() {}
+	send(callback : Kii.HttpClientCallback) {
+	    var data = {
+		url : this.url,
+		type : this.method,
+		headers : this.headers,
+		dataType : 'json',
+		scriptCharset: 'utf-8',
+		processData : false
+	    };
+	    this.sendRequest(data, callback);	    
+	}
+
+	private sendRequest(data : any, callback : Kii.HttpClientCallback) {
+	    $.ajax(data)
+		.done(function(data_, status, data) {
+		    callback.onReceive(data.status,
+				       data.getAllResponseHeaders(),
+				       JSON.parse(data.responseText));
+		}).fail(function(data) {
+		    callback.onError(data.status, data.responseText);
+		});	    
+	}
     }
 }

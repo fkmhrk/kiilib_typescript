@@ -15,7 +15,7 @@ module Kii {
 
 	sendJson(json : any, callback : HttpClientCallback);
 
-	send();
+	send(callback : HttpClientCallback);
 
     }
 }
