@@ -13,6 +13,8 @@ module Kii {
 
 	signUp(info : any, password : string, callback : UserCallback);
 
+	deleteUser(user : KiiUser, callback : KiiCallback);
+
         // APIs
         userAPI();
         groupAPI() : GroupAPI;

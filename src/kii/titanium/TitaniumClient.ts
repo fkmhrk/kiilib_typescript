@@ -53,9 +53,15 @@ module titanium {
 	    this.client.onload = (e : any) => {
 		// create headers
 		var responseHeader = {};
-		callback.onReceive(this.client.status,
-				   responseHeader,
-				   JSON.parse(this.client.responseText));
+		if (this.client.status == 204) {
+		    callback.onReceive(this.client.status,
+				       responseHeader,
+				       {});
+		} else {
+		    callback.onReceive(this.client.status,
+				       responseHeader,
+				       JSON.parse(this.client.responseText));
+		}
 	    };
 	    this.client.onerror = (e : any) => {
 		callback.onError(this.client.status, JSON.parse(this.client.responseText));

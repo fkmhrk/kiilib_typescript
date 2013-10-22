@@ -63,9 +63,15 @@ module jquery {
 	private sendRequest(data : any, callback : Kii.HttpClientCallback) {
 	    $.ajax(data)
 		.done(function(data_, status, data) {
-		    callback.onReceive(data.status,
-				       data.getAllResponseHeaders(),
-				       JSON.parse(data.responseText));
+		    if (data.status == 204) {
+			callback.onReceive(data.status,
+					   data.getAllResponseHeaders(),
+					   {});
+		    } else {
+			callback.onReceive(data.status,
+					   data.getAllResponseHeaders(),
+					   JSON.parse(data.responseText));
+		    }
 		}).fail(function(data) {
 		    callback.onError(data.status, data.responseText);
 		});	    
