@@ -2,4 +2,6 @@ exports.KiiContext = Kii.KiiContext;
 exports.KiiUser = Kii.KiiUser;
 exports.KiiBucket = Kii.KiiBucket;
 exports.KiiObject = Kii.KiiObject;
+exports.KiiCondition = Kii.KiiCondition;
+
 exports.KiiAppAPI = Kii.KiiAppAPI;

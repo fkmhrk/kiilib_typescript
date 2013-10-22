@@ -1,5 +1,7 @@
 /// <reference path="KiiUser.ts" />
+/// <reference path="KiiCondition.ts" />
 /// <reference path="KiiObject.ts" />
+/// <reference path="BucketAPI.ts" />
 /// <reference path="ObjectAPI.ts" />
 
 module Kii {
@@ -10,7 +12,7 @@ module Kii {
         // APIs
         userAPI();
         groupAPI();
-        bucketAPI();
+        bucketAPI() : BucketAPI;
         objectAPI() : ObjectAPI;
         aclAPI();
         topicAPI();  
@@ -26,6 +28,11 @@ module Kii {
 	error : (status : number, body : any) => void;
     }
 
+    export interface QueryCallback {
+	success : (result : Array<KiiObject>, condition : KiiCondition) => void;
+	error : (status : number, body : any) => void;
+    }
+    
     export interface ObjectCallback {
 	success : (obj : KiiObject) => void;
 	error : (status : number, body : any) => void;

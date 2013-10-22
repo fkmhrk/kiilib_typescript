@@ -2,6 +2,7 @@ tsc KiiContext.ts KiiUser.ts \
 KiiBucket.ts \
 KiiObject.ts \
 kii/KiiAppAPI.ts \
+kii/KiiObjectAPI.ts \
 --out KiiLib_base.js \
 -d
 
