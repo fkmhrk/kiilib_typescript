@@ -1,14 +1,20 @@
-/// <reference path="../AppApi.ts" />
+/// <reference path="../AppAPI.ts" />
+/// <reference path="../ObjectAPI.ts" />
 /// <reference path="../KiiContext.ts" />
 /// <reference path="../HttpClient.ts" />
 /// <reference path="../HttpClientCallback.ts" />
 
+/// <reference path="KiiObjectAPI.ts" />
+
 module Kii {
     export class KiiAppAPI implements AppAPI {
         context : KiiContext;
+	objectAPI_ : ObjectAPI;
 
 	constructor(context : KiiContext) {
 	    this.context = context;
+
+	    this.objectAPI_ = new KiiObjectAPI(context);
 	}
 	
         login(userIdentifier : string, password : string, callback : UserCallback) {
@@ -49,24 +55,14 @@ module Kii {
 		    callback.error(status, body);
 		}
 	    });
-/*	    
-	    if (resp.getStatus() != 200) {
-			throw new CloudException(resp.getStatus(), resp.getAsJson());
-		}
-		respJson = resp.getAsJson();
-
-		userId = respJson['id'];
-		token = respJson['access_token'];
-		c.setAccessToken(token);
-
-		return new Kiiuser(userId);
-*/		
 	}
         // APIs
         userAPI() {}
         groupAPI() {}
         bucketAPI() {}
-        objectAPI() {}
+        objectAPI() : ObjectAPI {
+	    return this.objectAPI_;
+	}
         aclAPI() {}
         topicAPI() {}      
     }

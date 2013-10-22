@@ -34,6 +34,9 @@ module titanium {
 	setKiiHeader(context : Kii.KiiContext, authRequired : boolean) {
 	    this.setHeader('x-kii-appid', context.getAppId());
 	    this.setHeader('x-kii-appkey', context.getAppKey());
+	    if (authRequired) {
+		this.setHeader('authorization', 'bearer ' + context.getAccessToken());
+	    }
 	}
 
 	sendJson(json : any, callback : Kii.HttpClientCallback) {

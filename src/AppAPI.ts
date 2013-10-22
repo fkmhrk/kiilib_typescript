@@ -1,4 +1,6 @@
 /// <reference path="KiiUser.ts" />
+/// <reference path="KiiObject.ts" />
+/// <reference path="ObjectAPI.ts" />
 
 module Kii {
     export interface AppAPI {
@@ -9,13 +11,23 @@ module Kii {
         userAPI();
         groupAPI();
         bucketAPI();
-        objectAPI();
+        objectAPI() : ObjectAPI;
         aclAPI();
         topicAPI();  
+    }
+
+    export interface KiiCallback {
+	success : () => void;
+	error : (status : number, body : any) => void;
     }
     
     export interface UserCallback {
 	success : (user : KiiUser) => void;
 	error : (status : number, body : any) => void;
     }
+
+    export interface ObjectCallback {
+	success : (obj : KiiObject) => void;
+	error : (status : number, body : any) => void;
+    }    
 }
