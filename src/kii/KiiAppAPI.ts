@@ -15,6 +15,7 @@ module Kii {
 	groupAPI_ : GroupAPI;
 	bucketAPI_ : BucketAPI;
 	objectAPI_ : ObjectAPI;
+	aclAPI_ : ACLAPI;
 
 	constructor(context : KiiContext) {
 	    this.context = context;
@@ -22,6 +23,7 @@ module Kii {
 	    this.groupAPI_ = new KiiGroupAPI(context);
 	    this.bucketAPI_ = new KiiBucketAPI(context);
 	    this.objectAPI_ = new KiiObjectAPI(context);
+	    this.aclAPI_ = new KiiACLAPI(context);
 	}
 	
         login(userIdentifier : string, password : string, callback : UserCallback) {
@@ -127,7 +129,11 @@ module Kii {
         objectAPI() : ObjectAPI {
 	    return this.objectAPI_;
 	}
-        aclAPI() {}
+	
+        aclAPI() : ACLAPI{
+	    return this.aclAPI_;
+	}
+	
         topicAPI() {}      
     }
 }

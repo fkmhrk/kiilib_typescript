@@ -5,6 +5,7 @@
 /// <reference path="GroupAPI.ts" />
 /// <reference path="BucketAPI.ts" />
 /// <reference path="ObjectAPI.ts" />
+/// <reference path="ACLAPI.ts" />
 
 module Kii {
     export interface AppAPI {
@@ -20,7 +21,7 @@ module Kii {
         groupAPI() : GroupAPI;
         bucketAPI() : BucketAPI;
         objectAPI() : ObjectAPI;
-        aclAPI();
+        aclAPI() : ACLAPI;
         topicAPI();  
     }
 

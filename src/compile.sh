@@ -5,6 +5,7 @@ KiiBucket.ts \
 KiiObject.ts \
 kii/KiiAppAPI.ts \
 kii/KiiObjectAPI.ts \
+kii/KiiACLAPI.ts \
 --out KiiLib_base.js \
 -d
 
