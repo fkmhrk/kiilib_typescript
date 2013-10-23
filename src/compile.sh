@@ -3,6 +3,7 @@ KiiUser.ts \
 KiiGroup.ts \
 KiiBucket.ts \
 KiiObject.ts \
+KiiTopic.ts \
 kii/KiiAppAPI.ts \
 kii/KiiObjectAPI.ts \
 kii/KiiACLAPI.ts \

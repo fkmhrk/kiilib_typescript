@@ -5,5 +5,6 @@ exports.KiiGroup = Kii.KiiGroup;
 exports.KiiBucket = Kii.KiiBucket;
 exports.KiiObject = Kii.KiiObject;
 exports.KiiCondition = Kii.KiiCondition;
+exports.KiiTopic = Kii.KiiTopic;
 
 exports.KiiAppAPI = Kii.KiiAppAPI;
