@@ -6,6 +6,7 @@
 /// <reference path="BucketAPI.ts" />
 /// <reference path="ObjectAPI.ts" />
 /// <reference path="ACLAPI.ts" />
+/// <reference path="TopicAPI.ts" />
 
 module Kii {
     export interface AppAPI {
@@ -22,7 +23,7 @@ module Kii {
         bucketAPI() : BucketAPI;
         objectAPI() : ObjectAPI;
         aclAPI() : ACLAPI;
-        topicAPI();  
+        topicAPI() : TopicAPI;  
     }
 
     export interface KiiCallback {

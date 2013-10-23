@@ -7,6 +7,7 @@
 /// <reference path="KiiGroupAPI.ts" />
 /// <reference path="KiiBucketAPI.ts" />
 /// <reference path="KiiObjectAPI.ts" />
+/// <reference path="KiiTopicAPI.ts" />
 
 module Kii {
     export class KiiAppAPI implements AppAPI {
@@ -16,6 +17,7 @@ module Kii {
 	bucketAPI_ : BucketAPI;
 	objectAPI_ : ObjectAPI;
 	aclAPI_ : ACLAPI;
+	topicAPI_ : TopicAPI;
 
 	constructor(context : KiiContext) {
 	    this.context = context;
@@ -24,6 +26,7 @@ module Kii {
 	    this.bucketAPI_ = new KiiBucketAPI(context);
 	    this.objectAPI_ = new KiiObjectAPI(context);
 	    this.aclAPI_ = new KiiACLAPI(context);
+	    this.topicAPI_ = new KiiTopicAPI(context);
 	}
 	
         login(userIdentifier : string, password : string, callback : UserCallback) {
@@ -134,6 +137,8 @@ module Kii {
 	    return this.aclAPI_;
 	}
 	
-        topicAPI() {}      
+        topicAPI() : TopicAPI {
+	    return this.topicAPI_;
+	}
     }
 }
