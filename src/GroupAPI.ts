@@ -13,5 +13,7 @@ module Kii {
 	getJoinedGroups(user : KiiUser, callback : GroupListCallback);
 
 	getOwnedGroups(user : KiiUser, callback : GroupListCallback);
+
+	addMember(group : KiiGroup, user : KiiUser, callback : GroupCallback);
     }
 }

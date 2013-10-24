@@ -144,5 +144,30 @@ module Kii {
 	    group.name = name;
 	    return group;
 	}
+
+	addMember(group : KiiGroup, user : KiiUser, callback : GroupCallback) {
+	    var c : KiiContext = this.context;
+	    var url = c.getServerUrl() + 
+		'/apps/'+ c.getAppId() +
+		group.getPath() +
+		'/members/' + user.id;
+
+	    var client = c.getNewClient();
+	    client.setUrl(url);
+	    client.setMethod('PUT');
+	    client.setKiiHeader(c, true);
+
+	    client.send({
+	        onReceive : (status : number, headers : any, body : any) => {
+		    if (callback.success === undefined) { return; }
+		    group.members.push(user);
+		    callback.success(group);
+		},
+		onError : (status : number, body : any) => {
+		    if (callback.error === undefined) { return; }		    
+		    callback.error(status, body);
+		}		
+	    });	    
+	}
     }
 }

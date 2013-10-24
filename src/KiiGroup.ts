@@ -3,9 +3,11 @@ module Kii {
         id : string;
 	name : string;
 	owner : KiiUser;
+	members : Array<KiiUser>;
 
         constructor(id : string) {
-      	     this.id = id;
+      	    this.id = id;
+	    this.members = [];
 	}
 
 	public getPath() {
