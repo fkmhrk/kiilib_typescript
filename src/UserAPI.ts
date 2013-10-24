@@ -7,6 +7,9 @@ module Kii {
 
 	update(user : KiiUser, callback : UserCallback);
 
+	changePassword(user : KiiUser, current : string, newPassword : string,
+		    callback : KiiCallback);
+	
 	updateEmail(user : KiiUser, email : string, verified : boolean,
 		    callback : UserCallback);
 	
