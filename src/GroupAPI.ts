@@ -17,5 +17,7 @@ module Kii {
 	addMember(group : KiiGroup, user : KiiUser, callback : GroupCallback);
 
 	removeMember(group : KiiGroup, user : KiiUser, callback : GroupCallback);
+
+	fetchMembers(group : KiiGroup, callback : UserListCallback);
     }
 }

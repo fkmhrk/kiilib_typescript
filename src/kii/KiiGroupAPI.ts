@@ -194,5 +194,35 @@ module Kii {
 		}		
 	    });
 	}
+	
+	fetchMembers(group : KiiGroup, callback : UserListCallback) {
+	    var c : KiiContext = this.context;
+	    var url = c.getServerUrl() + 
+		'/apps/'+ c.getAppId() +
+		group.getPath() +
+		'/members';
+
+	    var client = c.getNewClient();
+	    client.setUrl(url);
+	    client.setMethod('GET');
+	    client.setKiiHeader(c, true);
+
+	    client.send({
+	        onReceive : (status : number, headers : any, body : any) => {
+		    if (callback.success === undefined) { return; }
+		    var array = body['members'];
+		    var list = new Array<KiiUser>();
+		    array.forEach((item : any) => {
+			var id = item['userID'];
+			list.push(new KiiUser(id));
+		    });
+		    callback.success(list);
+		},
+		onError : (status : number, body : any) => {
+		    if (callback.error === undefined) { return; }		    
+		    callback.error(status, body);
+		}		
+	    });	    
+	}
     }
 }

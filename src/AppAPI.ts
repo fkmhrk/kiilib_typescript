@@ -37,6 +37,11 @@ module Kii {
 	error : (status : number, body : any) => void;
     }
 
+    export interface UserListCallback {
+	success : (list : Array<KiiUser>) => void;
+	error : (status : number, body : any) => void;
+    }    
+
     export interface GroupCallback {
 	success : (group : KiiGroup) => void;
 	error : (status : number, body : any) => void;
