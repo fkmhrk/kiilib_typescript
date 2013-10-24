@@ -167,7 +167,32 @@ module Kii {
 		    if (callback.error === undefined) { return; }		    
 		    callback.error(status, body);
 		}		
-	    });	    
+	    });
+	}
+	
+	removeMember(group : KiiGroup, user : KiiUser, callback : GroupCallback) {
+	    var c : KiiContext = this.context;
+	    var url = c.getServerUrl() + 
+		'/apps/'+ c.getAppId() +
+		group.getPath() +
+		'/members/' + user.id;
+
+	    var client = c.getNewClient();
+	    client.setUrl(url);
+	    client.setMethod('DELETE');
+	    client.setKiiHeader(c, true);
+
+	    client.send({
+	        onReceive : (status : number, headers : any, body : any) => {
+		    if (callback.success === undefined) { return; }
+		    group.removeMember(user);
+		    callback.success(group);
+		},
+		onError : (status : number, body : any) => {
+		    if (callback.error === undefined) { return; }		    
+		    callback.error(status, body);
+		}		
+	    });
 	}
     }
 }
