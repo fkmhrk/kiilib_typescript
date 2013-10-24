@@ -16,6 +16,8 @@ module Kii {
 		    callback : UserCallback);
 	
 	updatePhone(user : KiiUser, phone : string, verified : boolean,
-		    callback : UserCallback);	
+		    callback : UserCallback);
+
+	subscribe(user : KiiUser, target : any, callback : KiiCallback);
     }
 }
