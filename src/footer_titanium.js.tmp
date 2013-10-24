@@ -9,5 +9,6 @@ exports.KiiTopic = Kii.KiiTopic;
 exports.KiiTopicMessage = Kii.KiiTopicMessage;
 exports.KiiGCMMessage = Kii.KiiGCMMessage;
 exports.KiiAPNsMessage = Kii.KiiAPNsMessage;
+exports.KiiEvent = Kii.KiiEvent;
 
 exports.KiiAppAPI = Kii.KiiAppAPI;

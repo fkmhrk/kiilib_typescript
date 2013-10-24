@@ -8,6 +8,7 @@
 /// <reference path="ObjectAPI.ts" />
 /// <reference path="ACLAPI.ts" />
 /// <reference path="TopicAPI.ts" />
+/// <reference path="KiiEvent.ts" />
 
 module Kii {
     export interface AppAPI {
@@ -17,6 +18,8 @@ module Kii {
 	signUp(info : any, password : string, callback : UserCallback);
 
 	deleteUser(user : KiiUser, callback : KiiCallback);
+
+	sendEvent(event : KiiEvent, callback : KiiCallback);
 
         // APIs
         userAPI() : UserAPI;

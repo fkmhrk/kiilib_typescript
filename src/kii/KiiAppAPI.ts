@@ -119,7 +119,33 @@ module Kii {
 		    if (callback.error === undefined) { return; }		    
 		    callback.error(status, body);
 		}
-	    });	    
+	    });
+	}
+
+	sendEvent(event : KiiEvent, callback : KiiCallback) {
+	    var c : KiiContext = this.context;
+	    var url = c.getServerUrl() +
+		'/apps/'+ c.getAppId() +
+		'/events';
+	    event.data['_deviceID'] = c.getDeviceId();
+	    event.data['_uploadedAt'] = new Date().getTime();
+		
+	    var client : HttpClient = c.getNewClient();
+	    client.setUrl(url);
+	    client.setMethod('POST');
+	    client.setContentType('application/vnd.kii.Event+json');
+	    client.setKiiHeader(c, false);
+
+	    client.sendJson(event.data, {
+	        onReceive : (status : number, headers : any, body : any) => {
+		    if (callback.success === undefined) { return; }
+		    callback.success();
+		},
+		onError : (status : number, body : any) => {
+		    if (callback.error === undefined) { return; }		    
+		    callback.error(status, body);
+		}
+	    });
 	}
 	
         // APIs

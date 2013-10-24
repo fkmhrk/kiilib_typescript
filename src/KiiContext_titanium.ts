@@ -7,6 +7,7 @@ module Kii {
         appKey : string;
         url : string;
         token : string;
+	deviceId : string;	
 	clientFactory : () => HttpClient;
 
         constructor(appId : string, appKey : string, url : string) {
@@ -38,6 +39,14 @@ module Kii {
 	getAccessToken() : string {
 	    return this.token;
 	}
+
+	setDeviceId(value : string) {
+	    this.deviceId = value;
+	}
+
+	getDeviceId() : string {
+	    return this.deviceId;
+	}	
 
 	setClientFactory(factory : () => HttpClient) {
 	    this.clientFactory = factory;
