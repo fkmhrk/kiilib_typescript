@@ -6,5 +6,8 @@ exports.KiiBucket = Kii.KiiBucket;
 exports.KiiObject = Kii.KiiObject;
 exports.KiiCondition = Kii.KiiCondition;
 exports.KiiTopic = Kii.KiiTopic;
+exports.KiiTopicMessage = Kii.KiiTopicMessage;
+exports.KiiGCMMessage = Kii.KiiGCMMessage;
+exports.KiiAPNsMessage = Kii.KiiAPNsMessage;
 
 exports.KiiAppAPI = Kii.KiiAppAPI;
