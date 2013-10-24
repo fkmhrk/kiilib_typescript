@@ -7,6 +7,8 @@ module Kii {
 	       members : Array<KiiUser>, callback : GroupCallback);
 
 	fetchGroup(id : string, callback : GroupCallback);
+
+	deleteGroup(group : KiiGroup, callback : KiiCallback);
 	
 	getJoinedGroups(user : KiiUser, callback : GroupListCallback);
 
