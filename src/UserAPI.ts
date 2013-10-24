@@ -8,6 +8,9 @@ module Kii {
 	update(user : KiiUser, callback : UserCallback);
 
 	updateEmail(user : KiiUser, email : string, verified : boolean,
+		    callback : UserCallback);
+	
+	updatePhone(user : KiiUser, phone : string, verified : boolean,
 		    callback : UserCallback);	
     }
 }

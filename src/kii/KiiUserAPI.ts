@@ -95,6 +95,42 @@ module Kii {
 		    if (callback.error === undefined) { return; }		    
 		    callback.error(status, body);
 		}		
+	    });
+	}
+
+	updatePhone(user : KiiUser, phone : string,
+		    verified : boolean, callback : UserCallback) {
+	    var c : KiiContext = this.context;
+	    var url = c.getServerUrl() + 
+		'/apps/'+ c.getAppId() +
+		user.getPath() +
+		'/phone-number';
+	    var body = {
+		'phoneNumber'  : phone
+	    };
+	    if (verified) {
+		body['verified'] = true;
+	    }
+	    
+	    var client = c.getNewClient();
+	    client.setUrl(url);
+	    client.setMethod('PUT');
+	    client.setContentType('application/vnd.kii.PhoneNumberModificationRequest+json');
+	    client.setKiiHeader(c, true);
+
+	    client.sendJson(body, {
+	        onReceive : (status : number, headers : any, body : any) => {
+		    if (callback.success === undefined) { return; }
+		    user.data['phoneNumber'] = phone;
+		    if (verified) {
+			user.data['phoneNumberVerified'] = true;
+		    }
+		    callback.success(user);
+		},
+		onError : (status : number, body : any) => {
+		    if (callback.error === undefined) { return; }		    
+		    callback.error(status, body);
+		}		
 	    });	    
 	}
     }
