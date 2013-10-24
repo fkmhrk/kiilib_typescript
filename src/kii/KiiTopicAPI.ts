@@ -35,5 +35,31 @@ module Kii {
 		}
 	    });
 	}
+
+	sendMessage(topic : KiiTopic, message : KiiTopicMessage, callback : KiiCallback) {
+	    var c : KiiContext = this.context;
+	    var url = c.getServerUrl() +
+		'/apps/'+ c.getAppId() +
+		topic.getPath() +
+		'/push/messages';
+		
+	    var client : HttpClient = c.getNewClient();
+	    client.setUrl(url);
+	    client.setMethod('POST');
+	    client.setContentType('application/vnd.kii.SendPushMessageRequest+json');
+	    client.setKiiHeader(c, true);
+
+	    client.sendJson(message.toJson(), {
+	        onReceive : (status : number, headers : any, body : any) => {
+		    if (callback.success === undefined) { return; }
+		    callback.success();
+		    
+		},
+		onError : (status : number, body : any) => {
+		    if (callback.error === undefined) { return; }		    
+		    callback.error(status, body);
+		}
+	    });	    
+	}
     }
 }
