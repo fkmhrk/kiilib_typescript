@@ -4,5 +4,7 @@
 module Kii {
     export interface UserAPI {
 	fetchUser(id : string, callback : UserCallback);
+
+	update(user : KiiUser, callback : UserCallback);
     }
 }

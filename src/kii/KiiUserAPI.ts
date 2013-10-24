@@ -35,7 +35,31 @@ module Kii {
 		    if (callback.error === undefined) { return; }		    
 		    callback.error(status, body);
 		}		
-	    });	    
+	    });
+	}
+
+	update(user : KiiUser, callback : UserCallback) {
+	    var c : KiiContext = this.context;
+	    var url = c.getServerUrl() + 
+		'/apps/'+ c.getAppId() +
+		user.getPath();
+
+	    var client = c.getNewClient();
+	    client.setUrl(url);
+	    client.setMethod('POST');
+	    client.setContentType('application/vnd.kii.UserUpdateRequest+json');
+	    client.setKiiHeader(c, true);
+
+	    client.sendJson(user.data, {
+	        onReceive : (status : number, headers : any, body : any) => {
+		    if (callback.success === undefined) { return; }
+		    callback.success(user);
+		},
+		onError : (status : number, body : any) => {
+		    if (callback.error === undefined) { return; }		    
+		    callback.error(status, body);
+		}		
+	    });
 	}
     }
 }
