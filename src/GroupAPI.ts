@@ -5,6 +5,8 @@ module Kii {
     export interface GroupAPI {
 	create(name : string, owner : KiiUser,
 	       members : Array<KiiUser>, callback : GroupCallback);
+
+	fetchGroup(id : string, callback : GroupCallback);
 	
 	getJoinedGroups(user : KiiUser, callback : GroupListCallback);
 

@@ -44,7 +44,36 @@ module Kii {
 		    if (callback.error === undefined) { return; }		    
 		    callback.error(status, body);
 		}		
-	    });	    
+	    });
+	}
+
+	fetchGroup(id : string, callback : GroupCallback) {
+	    var c : KiiContext = this.context;
+	    var url = c.getServerUrl() + 
+		'/apps/'+ c.getAppId() +
+		'/groups/' + id;
+
+	    var client = c.getNewClient();
+	    client.setUrl(url);
+	    client.setMethod('GET');
+	    client.setKiiHeader(c, true);
+
+	    client.send({
+	        onReceive : (status : number, headers : any, body : any) => {
+		    if (callback.success === undefined) { return; }
+		    var id = body['groupID'];
+		    var name = body['name'];
+		    var ownerId = body['owner'];
+		    var group = new KiiGroup(id);
+		    group.name = name;
+		    group.owner = new KiiUser(ownerId);
+		    callback.success(group);
+		},
+		onError : (status : number, body : any) => {
+		    if (callback.error === undefined) { return; }		    
+		    callback.error(status, body);
+		}		
+	    });
 	}
 	
 	getJoinedGroups(user : KiiUser, callback : GroupListCallback) {
