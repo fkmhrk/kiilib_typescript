@@ -35,17 +35,21 @@ module jquery {
 	    }
 	}
 
-	sendJson(json : any, callback : Kii.HttpClientCallback) {
+	sendText(text : string, callback : Kii.HttpClientCallback) {
 	    var data = {
 		url : this.url,
 		type : this.method,
 		headers : this.headers,
 		dataType : 'json',
 		scriptCharset: 'utf-8',
-		data : JSON.stringify(json),
+		data : text,
 		processData : false
 	    };
 	    this.sendRequest(data, callback);
+	}
+	
+	sendJson(json : any, callback : Kii.HttpClientCallback) {
+	    this.sendText(JSON.stringify(json), callback);
 	}
 
 	send(callback : Kii.HttpClientCallback) {

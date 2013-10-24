@@ -13,6 +13,8 @@ module Kii {
 
 	setKiiHeader(context : KiiContext, authRequired : boolean);
 
+	sendText(text : string, callback : HttpClientCallback);
+	
 	sendJson(json : any, callback : HttpClientCallback);
 
 	send(callback : HttpClientCallback);

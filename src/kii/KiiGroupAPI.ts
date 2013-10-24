@@ -75,6 +75,32 @@ module Kii {
 		}		
 	    });
 	}
+
+	updateGroupName(group : KiiGroup, name : string, callback : GroupCallback) {
+	    var c : KiiContext = this.context;
+	    var url = c.getServerUrl() + 
+		'/apps/'+ c.getAppId() +
+		group.getPath() +
+		'/name';
+
+	    var client = c.getNewClient();
+	    client.setUrl(url);
+	    client.setMethod('PUT');
+	    client.setContentType('text/plain');
+	    client.setKiiHeader(c, true);
+
+	    client.sendText(name, {
+	        onReceive : (status : number, headers : any, body : any) => {
+		    if (callback.success === undefined) { return; }
+		    group.name = name;
+		    callback.success(group);
+		},
+		onError : (status : number, body : any) => {
+		    if (callback.error === undefined) { return; }		    
+		    callback.error(status, body);
+		}		
+	    });
+	}
 	
 	deleteGroup(group : KiiGroup, callback : KiiCallback) {
 	    var c : KiiContext = this.context;

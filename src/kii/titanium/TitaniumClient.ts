@@ -38,10 +38,14 @@ module titanium {
 		this.setHeader('authorization', 'bearer ' + context.getAccessToken());
 	    }
 	}
-
-	sendJson(json : any, callback : Kii.HttpClientCallback) {
+	
+	sendText(text : string, callback : Kii.HttpClientCallback) {
 	    this.prepareSend(callback);
-	    this.client.send(JSON.stringify(json));
+	    this.client.send(text);
+	}
+	
+	sendJson(json : any, callback : Kii.HttpClientCallback) {
+	    this.sendText(JSON.stringify(json), callback);
 	}
 	
 	send(callback : Kii.HttpClientCallback) {
