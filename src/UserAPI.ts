@@ -19,5 +19,7 @@ module Kii {
 		    callback : UserCallback);
 
 	subscribe(user : KiiUser, target : any, callback : KiiCallback);
+
+	unsubscribe(user : KiiUser, target : any, callback : KiiCallback);
     }
 }
