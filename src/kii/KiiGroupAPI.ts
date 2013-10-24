@@ -12,6 +12,41 @@ module Kii {
 	    this.context = context;
         }
 
+	create(name : string, owner : KiiUser,
+	       members : Array<KiiUser>, callback : GroupCallback) {
+	    var c : KiiContext = this.context;
+	    var url = c.getServerUrl() + 
+		'/apps/'+ c.getAppId() +
+		'/groups';
+	    var idList = new Array();
+	    members.forEach((item : KiiUser) => {
+		idList.push(item.id);
+	    });
+	    var body = {
+		'name' : name,
+		'owner' : owner.id,
+		'members' : idList
+	    }
+
+	    var client = c.getNewClient();
+	    client.setUrl(url);
+	    client.setMethod('POST');
+	    client.setContentType('application/vnd.kii.GroupCreationRequest+json');
+	    client.setKiiHeader(c, true);
+
+	    client.sendJson(body, {
+	        onReceive : (status : number, headers : any, body : any) => {
+		    if (callback.success === undefined) { return; }
+		    var id = body['groupID'];
+		    callback.success(new KiiGroup(id));
+		},
+		onError : (status : number, body : any) => {
+		    if (callback.error === undefined) { return; }		    
+		    callback.error(status, body);
+		}		
+	    });	    
+	}
+	
 	getJoinedGroups(user : KiiUser, callback : GroupListCallback) {
             return this.getGroups(user, 'is_member', callback);
 	}

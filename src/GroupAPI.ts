@@ -3,6 +3,9 @@
 /// <reference path="KiiGroup.ts"/>
 module Kii {
     export interface GroupAPI {
+	create(name : string, owner : KiiUser,
+	       members : Array<KiiUser>, callback : GroupCallback);
+	
 	getJoinedGroups(user : KiiUser, callback : GroupListCallback);
 
 	getOwnedGroups(user : KiiUser, callback : GroupListCallback);
