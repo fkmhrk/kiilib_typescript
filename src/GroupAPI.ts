@@ -10,6 +10,8 @@ module Kii {
 	
 	updateGroupName(group : KiiGroup, name : string, callback : GroupCallback);
 
+	updateGroupOwner(group : KiiGroup, owner : KiiUser, callback : GroupCallback);
+
 	deleteGroup(group : KiiGroup, callback : KiiCallback);
 	
 	getJoinedGroups(user : KiiUser, callback : GroupListCallback);

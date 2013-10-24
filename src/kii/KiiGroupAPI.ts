@@ -101,6 +101,35 @@ module Kii {
 		}		
 	    });
 	}
+
+	updateGroupOwner(group : KiiGroup, owner : KiiUser, callback : GroupCallback) {
+	    var c : KiiContext = this.context;
+	    var url = c.getServerUrl() + 
+		'/apps/'+ c.getAppId() +
+		group.getPath() +
+		'/owner';
+	    var body = {
+		'owner' : owner.id
+	    };
+
+	    var client = c.getNewClient();
+	    client.setUrl(url);
+	    client.setMethod('PUT');
+	    client.setContentType('application/vnd.kii.GroupOwnerChangeRequest+json');
+	    client.setKiiHeader(c, true);
+
+	    client.sendJson(body, {
+	        onReceive : (status : number, headers : any, body : any) => {
+		    if (callback.success === undefined) { return; }
+		    group.owner = owner;
+		    callback.success(group);
+		},
+		onError : (status : number, body : any) => {
+		    if (callback.error === undefined) { return; }		    
+		    callback.error(status, body);
+		}		
+	    });	    
+	}
 	
 	deleteGroup(group : KiiGroup, callback : KiiCallback) {
 	    var c : KiiContext = this.context;
