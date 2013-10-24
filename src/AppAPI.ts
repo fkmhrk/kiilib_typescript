@@ -2,6 +2,7 @@
 /// <reference path="KiiCondition.ts" />
 /// <reference path="KiiObject.ts" />
 
+/// <reference path="UserAPI.ts" />
 /// <reference path="GroupAPI.ts" />
 /// <reference path="BucketAPI.ts" />
 /// <reference path="ObjectAPI.ts" />
@@ -18,7 +19,7 @@ module Kii {
 	deleteUser(user : KiiUser, callback : KiiCallback);
 
         // APIs
-        userAPI();
+        userAPI() : UserAPI;
         groupAPI() : GroupAPI;
         bucketAPI() : BucketAPI;
         objectAPI() : ObjectAPI;

@@ -4,6 +4,7 @@
 /// <reference path="../HttpClient.ts" />
 /// <reference path="../HttpClientCallback.ts" />
 
+/// <reference path="KiiUserAPI.ts" />
 /// <reference path="KiiGroupAPI.ts" />
 /// <reference path="KiiBucketAPI.ts" />
 /// <reference path="KiiObjectAPI.ts" />
@@ -12,7 +13,8 @@
 module Kii {
     export class KiiAppAPI implements AppAPI {
         context : KiiContext;
-	
+
+	userAPI_ : UserAPI;
 	groupAPI_ : GroupAPI;
 	bucketAPI_ : BucketAPI;
 	objectAPI_ : ObjectAPI;
@@ -22,6 +24,7 @@ module Kii {
 	constructor(context : KiiContext) {
 	    this.context = context;
 
+	    this.userAPI_ = new KiiUserAPI(context);
 	    this.groupAPI_ = new KiiGroupAPI(context);
 	    this.bucketAPI_ = new KiiBucketAPI(context);
 	    this.objectAPI_ = new KiiObjectAPI(context);
@@ -120,7 +123,10 @@ module Kii {
 	}
 	
         // APIs
-        userAPI() {}
+        userAPI() : UserAPI {
+	    return this.userAPI_;
+	}
+	
         groupAPI() : GroupAPI {
 	    return this.groupAPI_;
 	}

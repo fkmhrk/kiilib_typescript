@@ -1,7 +1,7 @@
 module Kii {
     export class KiiUser {
         id : string;
-        data : any;
+        public data : any;
 
         constructor(id : string) {
       	     this.id = id;

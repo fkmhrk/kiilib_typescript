@@ -7,6 +7,7 @@ KiiTopic.ts \
 KiiTopicMessage.ts \
 KiiGCMMessage.ts \
 KiiAPNsMessage.ts \
+kii/KiiUserAPI.ts \
 kii/KiiAppAPI.ts \
 kii/KiiObjectAPI.ts \
 kii/KiiACLAPI.ts \
