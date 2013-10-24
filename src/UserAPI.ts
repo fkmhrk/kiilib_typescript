@@ -10,6 +10,8 @@ module Kii {
 	changePassword(user : KiiUser, current : string, newPassword : string,
 		    callback : KiiCallback);
 	
+	resetPassword(user : KiiUser, callback : KiiCallback);
+	
 	updateEmail(user : KiiUser, email : string, verified : boolean,
 		    callback : UserCallback);
 	
