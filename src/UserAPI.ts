@@ -6,5 +6,8 @@ module Kii {
 	fetchUser(id : string, callback : UserCallback);
 
 	update(user : KiiUser, callback : UserCallback);
+
+	updateEmail(user : KiiUser, email : string, verified : boolean,
+		    callback : UserCallback);	
     }
 }

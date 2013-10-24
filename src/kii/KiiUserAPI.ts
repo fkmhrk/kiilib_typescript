@@ -61,5 +61,41 @@ module Kii {
 		}		
 	    });
 	}
+
+	updateEmail(user : KiiUser, email : string, verified : boolean,
+		    callback : UserCallback) {
+	    var c : KiiContext = this.context;
+	    var url = c.getServerUrl() + 
+		'/apps/'+ c.getAppId() +
+		user.getPath() +
+		'/email-address';
+	    var body = {
+		'emailAddress'  : email
+	    };
+	    if (verified) {
+		body['verified'] = true;
+	    }
+	    
+	    var client = c.getNewClient();
+	    client.setUrl(url);
+	    client.setMethod('PUT');
+	    client.setContentType('application/vnd.kii.EmailAddressModificationRequest+json');
+	    client.setKiiHeader(c, true);
+
+	    client.sendJson(body, {
+	        onReceive : (status : number, headers : any, body : any) => {
+		    if (callback.success === undefined) { return; }
+		    user.data['emailAddress'] = email;
+		    if (verified) {
+			user.data['emailAddressVerified'] = true;
+		    }
+		    callback.success(user);
+		},
+		onError : (status : number, body : any) => {
+		    if (callback.error === undefined) { return; }		    
+		    callback.error(status, body);
+		}		
+	    });	    
+	}
     }
 }
