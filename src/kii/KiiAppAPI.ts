@@ -38,6 +38,13 @@ module Kii {
                 'password' : password };
             this.execLogin(body, callback);
 	}
+
+        loginWithLocalPhone(phone : string, country : string, password : string, callback : UserCallback) {	
+            var body = {
+                'username' : 'PHONE:' + country + '-' + phone,
+                'password' : password };
+            this.execLogin(body, callback);
+	}	
 	
         loginAsAdmin(clientId : string, clientSecret : string, callback : UserCallback) {
             var body = {
