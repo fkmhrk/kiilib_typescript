@@ -18,6 +18,8 @@ module Kii {
 	updatePhone(user : KiiUser, phone : string, verified : boolean,
 		    callback : UserCallback);
 
+	verifyPhone(user : KiiUser, code : string, callback : UserCallback);	
+
 	subscribe(user : KiiUser, target : any, callback : KiiCallback);
 
 	unsubscribe(user : KiiUser, target : any, callback : KiiCallback);

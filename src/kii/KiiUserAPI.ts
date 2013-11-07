@@ -188,6 +188,35 @@ module Kii {
 	    });
 	}
 
+	verifyPhone(user : KiiUser, code : string, callback : UserCallback) {
+	    var c : KiiContext = this.context;
+	    var url = c.getServerUrl() + 
+		'/apps/'+ c.getAppId() +
+		user.getPath() +
+		'/phone-number/verify';
+	    var body = {
+		'verificationCode'  : code
+	    };
+	    
+	    var client = c.getNewClient();
+	    client.setUrl(url);
+	    client.setMethod('POST');
+	    client.setContentType('application/vnd.kii.AddressVerificationRequest+json');
+	    client.setKiiHeader(c, true);
+
+	    client.sendJson(body, {
+	        onReceive : (status : number, headers : any, body : any) => {
+		    if (callback.success === undefined) { return; }
+		    user.data['phoneNumberVerified'] = true;
+		    callback.success(user);
+		},
+		onError : (status : number, body : any) => {
+		    if (callback.error === undefined) { return; }		    
+		    callback.error(status, body);
+		}		
+	    });
+	}
+
 	subscribe(user : KiiUser, target : any, callback : KiiCallback) {
 	    var targetPath = target.getPath();
 	    if (targetPath.lastIndexOf('/buckets', 0) == 0) {
