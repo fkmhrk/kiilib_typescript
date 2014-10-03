@@ -68,17 +68,24 @@ module Kii {
 
 	static andClause(array : Array<KiiClause>) {
             var c = new KiiClause('and');
-            c.clause['clauses'] = array;
+            c.clause['clauses'] = KiiClause.toClauses(array);
 
             return c;
 	}
 
 	static orClause(array : Array<KiiClause>) {
             var c = new KiiClause('or');
-            c.clause['clauses'] = array;
+            c.clause['clauses'] = KiiClause.toClauses(array);
 
             return c;
 	}
+
+        private static toClauses(array : Array<KiiClause>) {
+            for (var i = 0 ; i < array.length ; ++i) {
+                array[i] = array[i].toJson();
+            }
+            return array;
+        }
 
 	toJson() : any {
             return this.clause;
