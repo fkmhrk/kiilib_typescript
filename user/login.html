@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <title>Log in</title>
+</head>
+<body>
+<h1>Log in</h1>
+
+<section id="app">
+ <section id="appInfo">
+  <label>App ID</label><input type="text" id="appId"/>
+  <label>App Key</label><input type="text" id="appKey"/>
+  <label>Site</label>
+  <select id="site">
+   <option value="https://api.kii.com/api">US</option>
+   <option value="https://api-jp.kii.com/api">JP</option>   
+  </select><br>
+ </section>
+
+ <section id="form">
+   <label>Username</label><input type="text" id="username"/><br>
+   <label>Password</label><input type="password" id="password"/><br>
+   <button onclick="performLogin()">Log in</button>
+ </section>
+
+</section>
+
+<section id="message">
+<h2>Message</h2>
+
+<pre id="msg"></pre>
+</section>  
+
+<section id="src">
+<h2>Source</h2>
+
+<pre><code>
+function performLogin() {
+  // create API object
+  var appId = document.querySelector('#appId').value;
+  var appKey = document.querySelector('#appKey').value;
+  var site = document.querySelector('#site').value;
+
+  var context = new Kii.KiiContext(appId, appKey, site);
+  var api = new Kii.KiiAppAPI(context);
+
+  // get input value
+  var username = document.querySelector('#username').value;
+  var password = document.querySelector('#password').value;
+
+  // call login API
+  api.login(username, password, {
+    success : function(user) {
+      printMessage('login succeeded');
+      printMessage('User ID=' + user.getId());
+    },
+    error : function(status, body) {
+      printMessage('login failed HTTP=' + status);
+    }
+  });
+}
+
+function printMessage(msg) {
+  document.querySelector('#msg').innerHTML += "\n" + msg;
+}    
+</code></pre>    
+</section>  
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="../bin/jquery/KiiLib.js"></script>
+<script type="text/javascript">
+function performLogin() {
+  // create API object
+  var appId = document.querySelector('#appId').value;
+  var appKey = document.querySelector('#appKey').value;
+  var site = document.querySelector('#site').value;
+
+  var context = new Kii.KiiContext(appId, appKey, site);
+  var api = new Kii.KiiAppAPI(context);
+
+  // get input value
+  var username = document.querySelector('#username').value;
+  var password = document.querySelector('#password').value;
+
+  // call login API
+  api.login(username, password, {
+    success : function(user) {
+      printMessage('login succeeded');
+      printMessage('User ID=' + user.getId());
+    },
+    error : function(status, body) {
+      printMessage('login failed HTTP=' + status);
+    }
+  });
+}
+
+function printMessage(msg) {
+  document.querySelector('#msg').innerHTML += "\n" + msg;
+}
+</script>  
+</body>
+</html>
