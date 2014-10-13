@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
   <head>
-  <title>Log in</title>
-</head>
+    <title>Log in</title>
+  </head>
 <body>
 <h1>Log in</h1>
 
@@ -20,7 +20,7 @@
  <section id="form">
    <label>Username</label><input type="text" id="username"/><br>
    <label>Password</label><input type="password" id="password"/><br>
-   <button onclick="performLogin()">Log in</button>
+   <button id="loginButton" onclick="performLogin()">Log in</button>
  </section>
 
 </section>
@@ -34,41 +34,13 @@
 <section id="src">
 <h2>Source</h2>
 
-<pre><code>
-function performLogin() {
-  // create API object
-  var appId = document.querySelector('#appId').value;
-  var appKey = document.querySelector('#appKey').value;
-  var site = document.querySelector('#site').value;
-
-  var context = new Kii.KiiContext(appId, appKey, site);
-  var api = new Kii.KiiAppAPI(context);
-
-  // get input value
-  var username = document.querySelector('#username').value;
-  var password = document.querySelector('#password').value;
-
-  // call login API
-  api.login(username, password, {
-    success : function(user) {
-      printMessage('login succeeded');
-      printMessage('User ID=' + user.getId());
-    },
-    error : function(status, body) {
-      printMessage('login failed HTTP=' + status);
-    }
-  });
-}
-
-function printMessage(msg) {
-  document.querySelector('#msg').innerHTML += "\n" + msg;
-}    
+<pre><code id="code">
 </code></pre>    
 </section>  
 
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script type="text/javascript" src="../bin/jquery/KiiLib.js"></script>
-<script type="text/javascript">
+<script id="scriptSrc" type="text/javascript">
 function performLogin() {
   // create API object
   var appId = document.querySelector('#appId').value;
@@ -82,21 +54,32 @@ function performLogin() {
   var username = document.querySelector('#username').value;
   var password = document.querySelector('#password').value;
 
+  // disabled login button
+  document.querySelector('#loginButton').disabled = true;
+
   // call login API
   api.login(username, password, {
     success : function(user) {
+      document.querySelector('#loginButton').disabled = false;
       printMessage('login succeeded');
       printMessage('User ID=' + user.getId());
     },
     error : function(status, body) {
+      document.querySelector('#loginButton').disabled = false;
       printMessage('login failed HTTP=' + status);
     }
   });
 }
-
+</script>
+<script type="text/javascript">
 function printMessage(msg) {
   document.querySelector('#msg').innerHTML += "\n" + msg;
 }
+
+window.onload = function() {
+  document.querySelector('#code').innerHTML =
+    document.querySelector('#scriptSrc').innerHTML;
+}  
 </script>  
 </body>
 </html>
