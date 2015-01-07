@@ -1,8 +1,8 @@
 /// <reference path="AppAPI.ts"/>
 /// <reference path="KiiBucket.ts"/>
-/// <reference path="KiiCondition.ts"/>
+/// <reference path="QueryParams.ts"/>
 module Kii {
     export interface BucketAPI {
-	query(bucket : KiiBucket, condition : KiiCondition, callback : QueryCallback);
+	query(bucket : KiiBucket, params : QueryParams, callback : QueryCallback);
     }
 }
