@@ -1,5 +1,5 @@
 /// <reference path="KiiUser.ts" />
-/// <reference path="KiiCondition.ts" />
+/// <reference path="QueryParams.ts" />
 /// <reference path="KiiObject.ts" />
 
 /// <reference path="UserAPI.ts" />
@@ -57,7 +57,7 @@ module Kii {
     }    
 
     export interface QueryCallback {
-	success : (result : Array<KiiObject>, condition : KiiCondition) => void;
+	success : (result : Array<KiiObject>, params : QueryParams) => void;
 	error : (status : number, body : any) => void;
     }
     
