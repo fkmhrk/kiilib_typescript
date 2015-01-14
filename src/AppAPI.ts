@@ -12,14 +12,21 @@
 
 module Kii {
     export interface AppAPI {
+        login(userIdentifier : string, password : string) : KiiUser ;
         login(userIdentifier : string, password : string, callback : UserCallback);
-        loginWithLocalPhone(phone : string, country : string, password : string, callback : UserCallback);	
+        loginWithLocalPhone(phone : string, country : string, password : string) : KiiUser;        
+        loginWithLocalPhone(phone : string, country : string, password : string, callback : UserCallback);
+
+        loginAsAdmin(clientId : string, clientSecret : string) : KiiUser;
         loginAsAdmin(clientId : string, clientSecret : string, callback : UserCallback);
 
+        signUp(info : any, password : string) : KiiUser;
 	signUp(info : any, password : string, callback : UserCallback);
 
+        deleteUser(user : KiiUser);
 	deleteUser(user : KiiUser, callback : KiiCallback);
 
+        sendEvent(event : KiiEvent);
 	sendEvent(event : KiiEvent, callback : KiiCallback);
 
         // APIs
