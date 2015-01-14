@@ -12,7 +12,7 @@ module Kii {
 	    this.context = context;
         }
 
-	create(topic : KiiTopic, callback : KiiCallback) {
+	create(topic : KiiTopic, callback? : KiiCallback) {
 	    var c : KiiContext = this.context;
 	    var url = c.getServerUrl() +
 		'/apps/'+ c.getAppId() +
@@ -25,18 +25,23 @@ module Kii {
 
 	    client.send({
 	        onReceive : (status : number, headers : any, body : any) => {
+                    if (callback === undefined) { return; }
 		    if (callback.success === undefined) { return; }
 		    callback.success();
 		    
 		},
 		onError : (status : number, body : any) => {
-		    if (callback.error === undefined) { return; }		    
+                    if (callback === undefined) {
+                        throw new Error(body);
+                        return;
+                    }
+		    if (callback.error === undefined) { return; }
 		    callback.error(status, body);
 		}
 	    });
 	}
 
-	sendMessage(topic : KiiTopic, message : KiiTopicMessage, callback : KiiCallback) {
+	sendMessage(topic : KiiTopic, message : KiiTopicMessage, callback? : KiiCallback) {
 	    var c : KiiContext = this.context;
 	    var url = c.getServerUrl() +
 		'/apps/'+ c.getAppId() +
@@ -51,12 +56,17 @@ module Kii {
 
 	    client.sendJson(message.toJson(), {
 	        onReceive : (status : number, headers : any, body : any) => {
+                    if (callback === undefined) { return; }
 		    if (callback.success === undefined) { return; }
 		    callback.success();
 		    
 		},
 		onError : (status : number, body : any) => {
-		    if (callback.error === undefined) { return; }		    
+                    if (callback === undefined) {
+                        throw new Error(body);
+                        return;
+                    }
+		    if (callback.error === undefined) { return; }
 		    callback.error(status, body);
 		}
 	    });	    
