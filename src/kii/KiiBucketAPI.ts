@@ -15,7 +15,7 @@ module Kii {
 	    this.context = context;
         }
 
-	public query(bucket : KiiBucket, params : QueryParams, callback : QueryCallback) {
+	query(bucket : KiiBucket, params : QueryParams, callback? : QueryCallback) {
             var c = this.context;
             var url = c.getServerUrl() + 
 		'/apps/'+ c.getAppId() +
@@ -28,9 +28,9 @@ module Kii {
             client.setKiiHeader(c, true);
             client.setContentType('application/vnd.kii.QueryRequest+json');
 
-            var resp = client.sendJson(params.toJson(), {
+            var resp : QueryResult;
+            client.sendJson(params.toJson(), {
 		onReceive : (status : number, headers : any, body : any) => {
-		    if (callback.success === undefined) { return; }
 		    var nextPaginationKey = body['nextPaginationKey'];
 		    params.setPaginationKey(nextPaginationKey);
 		    
@@ -41,13 +41,26 @@ module Kii {
 			var id = item['_id'];
 			result.push(new KiiObject(bucket, id, item));
 		    };
+                    if (callback === undefined) {
+                        resp = {
+                            results : result,
+                            params : params
+                        };
+                        return;
+                    }
+                    if (callback.success === undefined) { return; }
 		    callback.success(result, params);
 		},
 		onError : (status : number, body : any) => {
-		    if (callback.error === undefined) { return; }		    
+                    if (callback === undefined) {
+                        throw new Error(body);
+                        return;
+                    }
+		    if (callback.error === undefined) { return; }
 		    callback.error(status, body);
 		}
 	    });
+            return resp;
 	}
     }
 }
