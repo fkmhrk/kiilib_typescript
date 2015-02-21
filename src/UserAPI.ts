@@ -13,8 +13,8 @@ module Kii {
 	changePassword(user : KiiUser, current : string, newPassword : string,
 		    callback : KiiCallback);
 
-        resetPassword(user : KiiUser);
-	resetPassword(user : KiiUser, callback : KiiCallback);
+        resetPassword(email : string);
+	resetPassword(email : string, callback : KiiCallback);
 
         updateEmail(user : KiiUser, email : string, verified : boolean) : KiiUser;
 	updateEmail(user : KiiUser, email : string, verified : boolean,

@@ -9,6 +9,7 @@
 /// <reference path="KiiBucketAPI.ts" />
 /// <reference path="KiiObjectAPI.ts" />
 /// <reference path="KiiTopicAPI.ts" />
+/// <reference path="KiiACLAPI.ts" />
 
 module Kii {
     export class KiiAppAPI implements AppAPI {
