@@ -83,17 +83,17 @@ module Kii {
 	    });
 	}
 
-	resetPassword(user : KiiUser, callback? : KiiCallback) {
+	resetPassword(email : string, callback? : KiiCallback) {
 	    var c : KiiContext = this.context;
 	    var url = c.getServerUrl() + 
 		'/apps/'+ c.getAppId() +
-		user.getPath() +
-		'/password/reset';
+                '/users/EMAIL:' + email + 
+		'/password/request-reset';
 	    
 	    var client = c.getNewClient();
 	    client.setUrl(url);
 	    client.setMethod('POST');
-	    client.setKiiHeader(c, true);
+	    client.setKiiHeader(c, false);
 
 	    client.send({
 	        onReceive : (status : number, headers : any, body : any) => {
