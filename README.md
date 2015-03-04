@@ -3,6 +3,13 @@ kiilib_typescript
 
 KiiCloud library for TypeScript
 
+Documentation
+=============
+
+https://fkmhrk.github.io/kiilib_typescript/docs/
+
+Currently supported only Japanese. 
+
 How to build
 ============
 in both build, KiiLib.d.ts will be generated.
