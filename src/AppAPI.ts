@@ -1,7 +1,8 @@
 /// <reference path="KiiUser.ts" />
+/// <reference path="KiiThing.ts" />
+/// <reference path="KiiTopic.ts" />
 /// <reference path="QueryParams.ts" />
 /// <reference path="KiiObject.ts" />
-
 /// <reference path="UserAPI.ts" />
 /// <reference path="GroupAPI.ts" />
 /// <reference path="BucketAPI.ts" />
