@@ -12,11 +12,11 @@ module Kii {
 	    this.context = context;
         }
 
-	grant(target : any, verb : string, subject : any, callback : KiiCallback) {
+	grant(target : any, verb : string, subject : any, callback? : KiiCallback) {
 	    this.exec('PUT', target, verb, subject, callback);
 	}
 	
-	revoke(target : any, verb : string, subject : any, callback : KiiCallback) {
+	revoke(target : any, verb : string, subject : any, callback? : KiiCallback) {
 	    this.exec('DELETE', target, verb, subject, callback);	    
 	}
 
@@ -36,12 +36,17 @@ module Kii {
 
 	    client.send({
 	        onReceive : (status : number, headers : any, body : any) => {
+                    if (callback === undefined) { return; }
 		    if (callback.success === undefined) { return; }
 		    callback.success();
 		    
 		},
 		onError : (status : number, body : any) => {
-		    if (callback.error === undefined) { return; }		    
+                    if (callback === undefined) {
+                        throw new Error(body);
+                        return;
+                    }
+		    if (callback.error === undefined) { return; }
 		    callback.error(status, body);
 		}
 	    });	    

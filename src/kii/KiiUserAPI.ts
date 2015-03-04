@@ -13,7 +13,7 @@ module Kii {
 	    this.context = context;
         }
 
-	fetchUser(id : string, callback : UserCallback) {
+	fetchUser(id : string, callback? : UserCallback) {
 	    var c : KiiContext = this.context;
 	    var url = c.getServerUrl() + 
 		'/apps/'+ c.getAppId() +
@@ -24,22 +24,32 @@ module Kii {
 	    client.setMethod('GET');
 	    client.setKiiHeader(c, true);
 
+            var respUser : KiiUser;
 	    client.send({
 	        onReceive : (status : number, headers : any, body : any) => {
+                    if (callback === undefined) {
+                        respUser = user;
+                        return;
+                    }
 		    if (callback.success === undefined) { return; }
 		    var user = new KiiUser(id);
 		    user.data = body;
 		    callback.success(user);
 		},
 		onError : (status : number, body : any) => {
-		    if (callback.error === undefined) { return; }		    
+                    if (callback === undefined) {
+                        throw new Error(body);
+                        return;
+                    }
+		    if (callback.error === undefined) { return; }
 		    callback.error(status, body);
 		}		
 	    });
+            return respUser;
 	}
 
 	changePassword(user : KiiUser, current : string,
-		       newPassword : string, callback : KiiCallback) {
+		       newPassword : string, callback? : KiiCallback) {
 	    var c : KiiContext = this.context;
 	    var url = c.getServerUrl() + 
 		'/apps/'+ c.getAppId() +
@@ -58,41 +68,51 @@ module Kii {
 
 	    client.sendJson(body, {
 	        onReceive : (status : number, headers : any, body : any) => {
+                    if (callback === undefined) { return; }
 		    if (callback.success === undefined) { return; }
 		    callback.success();
 		},
 		onError : (status : number, body : any) => {
-		    if (callback.error === undefined) { return; }		    
+                    if (callback === undefined) {
+                        throw new Error(body);
+                        return;
+                    }
+		    if (callback.error === undefined) { return; }
 		    callback.error(status, body);
 		}		
 	    });
 	}
 
-	resetPassword(user : KiiUser, callback : KiiCallback) {
+	resetPassword(email : string, callback? : KiiCallback) {
 	    var c : KiiContext = this.context;
 	    var url = c.getServerUrl() + 
 		'/apps/'+ c.getAppId() +
-		user.getPath() +
-		'/password/reset';
+                '/users/EMAIL:' + email + 
+		'/password/request-reset';
 	    
 	    var client = c.getNewClient();
 	    client.setUrl(url);
 	    client.setMethod('POST');
-	    client.setKiiHeader(c, true);
+	    client.setKiiHeader(c, false);
 
 	    client.send({
 	        onReceive : (status : number, headers : any, body : any) => {
+                    if (callback === undefined) { return; }
 		    if (callback.success === undefined) { return; }
 		    callback.success();
 		},
 		onError : (status : number, body : any) => {
-		    if (callback.error === undefined) { return; }		    
+                    if (callback === undefined) {
+                        throw new Error(body);
+                        return;
+                    }
+		    if (callback.error === undefined) { return; }
 		    callback.error(status, body);
 		}		
 	    });	    
 	}
 	
-	update(user : KiiUser, callback : UserCallback) {
+	update(user : KiiUser, callback? : UserCallback) {
 	    var c : KiiContext = this.context;
 	    var url = c.getServerUrl() + 
 		'/apps/'+ c.getAppId() +
@@ -104,20 +124,30 @@ module Kii {
 	    client.setContentType('application/vnd.kii.UserUpdateRequest+json');
 	    client.setKiiHeader(c, true);
 
+            var respUser : KiiUser;
 	    client.sendJson(user.data, {
 	        onReceive : (status : number, headers : any, body : any) => {
+                    if (callback === undefined) {
+                        respUser = user;
+                        return;
+                    }
 		    if (callback.success === undefined) { return; }
 		    callback.success(user);
 		},
 		onError : (status : number, body : any) => {
-		    if (callback.error === undefined) { return; }		    
+                    if (callback === undefined) {
+                        throw new Error(body);
+                        return;
+                    }
+		    if (callback.error === undefined) { return; }
 		    callback.error(status, body);
 		}		
 	    });
+            return respUser;
 	}
 
 	updateEmail(user : KiiUser, email : string, verified : boolean,
-		    callback : UserCallback) {
+		    callback? : UserCallback) {
 	    var c : KiiContext = this.context;
 	    var url = c.getServerUrl() + 
 		'/apps/'+ c.getAppId() +
@@ -136,24 +166,34 @@ module Kii {
 	    client.setContentType('application/vnd.kii.EmailAddressModificationRequest+json');
 	    client.setKiiHeader(c, true);
 
+            var respUser : KiiUser;
 	    client.sendJson(body, {
 	        onReceive : (status : number, headers : any, body : any) => {
-		    if (callback.success === undefined) { return; }
 		    user.data['emailAddress'] = email;
 		    if (verified) {
 			user.data['emailAddressVerified'] = true;
 		    }
+                    if (callback === undefined) {
+                        respUser = user;
+                        return;
+                    }
+		    if (callback.success === undefined) { return; }
 		    callback.success(user);
 		},
 		onError : (status : number, body : any) => {
-		    if (callback.error === undefined) { return; }		    
+                    if (callback === undefined) {
+                        throw new Error(body);
+                        return;
+                    }
+		    if (callback.error === undefined) { return; }	    
 		    callback.error(status, body);
 		}		
 	    });
+            return respUser;
 	}
 
 	updatePhone(user : KiiUser, phone : string,
-		    verified : boolean, callback : UserCallback) {
+		    verified : boolean, callback? : UserCallback) {
 	    var c : KiiContext = this.context;
 	    var url = c.getServerUrl() + 
 		'/apps/'+ c.getAppId() +
@@ -172,23 +212,33 @@ module Kii {
 	    client.setContentType('application/vnd.kii.PhoneNumberModificationRequest+json');
 	    client.setKiiHeader(c, true);
 
+            var respUser : KiiUser;
 	    client.sendJson(body, {
 	        onReceive : (status : number, headers : any, body : any) => {
-		    if (callback.success === undefined) { return; }
 		    user.data['phoneNumber'] = phone;
 		    if (verified) {
 			user.data['phoneNumberVerified'] = true;
 		    }
+                    if (callback === undefined) {
+                        respUser = user;
+                        return;
+                    }
+                    if (callback.success === undefined) { return; }
 		    callback.success(user);
 		},
 		onError : (status : number, body : any) => {
-		    if (callback.error === undefined) { return; }		    
+                    if (callback === undefined) {
+                        throw new Error(body);
+                        return;
+                    }
+		    if (callback.error === undefined) { return; }
 		    callback.error(status, body);
 		}		
 	    });
+            return respUser;
 	}
 
-	verifyPhone(user : KiiUser, code : string, callback : UserCallback) {
+	verifyPhone(user : KiiUser, code : string, callback? : UserCallback) {
 	    var c : KiiContext = this.context;
 	    var url = c.getServerUrl() + 
 		'/apps/'+ c.getAppId() +
@@ -204,20 +254,30 @@ module Kii {
 	    client.setContentType('application/vnd.kii.AddressVerificationRequest+json');
 	    client.setKiiHeader(c, true);
 
+            var respUser : KiiUser;
 	    client.sendJson(body, {
 	        onReceive : (status : number, headers : any, body : any) => {
-		    if (callback.success === undefined) { return; }
 		    user.data['phoneNumberVerified'] = true;
+                    if (callback === undefined) {
+                        respUser = user;
+                        return;
+                    }
+		    if (callback.success === undefined) { return; }
 		    callback.success(user);
 		},
 		onError : (status : number, body : any) => {
-		    if (callback.error === undefined) { return; }		    
+                    if (callback === undefined) {
+                        throw new Error(body);
+                        return;
+                    }
+		    if (callback.error === undefined) { return; }
 		    callback.error(status, body);
 		}		
 	    });
+            return respUser;
 	}
 
-	subscribe(user : KiiUser, target : any, callback : KiiCallback) {
+	subscribe(user : KiiUser, target : any, callback? : KiiCallback) {
 	    var targetPath = target.getPath();
 	    if (targetPath.lastIndexOf('/buckets', 0) == 0) {
 		targetPath += '/filters/all';
@@ -236,17 +296,22 @@ module Kii {
 
 	    client.send({
 	        onReceive : (status : number, headers : any, body : any) => {
+                    if (callback === undefined) { return; }
 		    if (callback.success === undefined) { return; }
 		    callback.success();
 		},
 		onError : (status : number, body : any) => {
-		    if (callback.error === undefined) { return; }		    
+                    if (callback === undefined) {
+                        throw new Error(body);
+                        return;
+                    }
+		    if (callback.error === undefined) { return; }
 		    callback.error(status, body);
 		}		
 	    });
 	}
 
-	unsubscribe(user : KiiUser, target : any, callback : KiiCallback) {
+	unsubscribe(user : KiiUser, target : any, callback? : KiiCallback) {
 	    var targetPath = target.getPath();
 	    if (targetPath.lastIndexOf('/buckets', 0) == 0) {
 		targetPath += '/filters/all';
@@ -265,11 +330,16 @@ module Kii {
 
 	    client.send({
 	        onReceive : (status : number, headers : any, body : any) => {
+                    if (callback === undefined) { return; }
 		    if (callback.success === undefined) { return; }
 		    callback.success();
 		},
 		onError : (status : number, body : any) => {
-		    if (callback.error === undefined) { return; }		    
+                    if (callback === undefined) {
+                        throw new Error(body);
+                        return;
+                    }
+		    if (callback.error === undefined) { return; }
 		    callback.error(status, body);
 		}		
 	    });

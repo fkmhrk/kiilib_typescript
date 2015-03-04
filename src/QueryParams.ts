@@ -1,6 +1,6 @@
 /// <reference path="KiiClause.ts"/>
 module Kii {
-    export class KiiCondition {
+    export class QueryParams {
 	clause : KiiClause;
 	orderBy : string;
 	descending : boolean;

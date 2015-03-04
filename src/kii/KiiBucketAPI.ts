@@ -1,7 +1,7 @@
 /// <reference path="../KiiContext.ts" />
 /// <reference path="../AppAPI.ts" />
 /// <reference path="../KiiBucket.ts" />
-/// <reference path="../KiiCondition.ts" />
+/// <reference path="../QueryParams.ts" />
 /// <reference path="../KiiObject.ts" />
 /// <reference path="../HttpClient.ts" />
 /// <reference path="../HttpClientCallback.ts" />
@@ -15,7 +15,7 @@ module Kii {
 	    this.context = context;
         }
 
-	public query(bucket : KiiBucket, condition : KiiCondition, callback : QueryCallback) {
+	query(bucket : KiiBucket, params : QueryParams, callback? : QueryCallback) {
             var c = this.context;
             var url = c.getServerUrl() + 
 		'/apps/'+ c.getAppId() +
@@ -28,11 +28,11 @@ module Kii {
             client.setKiiHeader(c, true);
             client.setContentType('application/vnd.kii.QueryRequest+json');
 
-            var resp = client.sendJson(condition.toJson(), {
+            var resp : QueryResult;
+            client.sendJson(params.toJson(), {
 		onReceive : (status : number, headers : any, body : any) => {
-		    if (callback.success === undefined) { return; }
 		    var nextPaginationKey = body['nextPaginationKey'];
-		    condition.setPaginationKey(nextPaginationKey);
+		    params.setPaginationKey(nextPaginationKey);
 		    
 		    var respArray = body['results'];
 		    var result = new Array<KiiObject>();
@@ -41,13 +41,26 @@ module Kii {
 			var id = item['_id'];
 			result.push(new KiiObject(bucket, id, item));
 		    };
-		    callback.success(result, condition);
+                    if (callback === undefined) {
+                        resp = {
+                            results : result,
+                            params : params
+                        };
+                        return;
+                    }
+                    if (callback.success === undefined) { return; }
+		    callback.success(result, params);
 		},
 		onError : (status : number, body : any) => {
-		    if (callback.error === undefined) { return; }		    
+                    if (callback === undefined) {
+                        throw new Error(body);
+                        return;
+                    }
+		    if (callback.error === undefined) { return; }
 		    callback.error(status, body);
 		}
 	    });
+            return resp;
 	}
     }
 }
