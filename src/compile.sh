@@ -4,6 +4,7 @@ KiiGroup.ts \
 KiiBucket.ts \
 KiiObject.ts \
 KiiTopic.ts \
+KiiThing.ts \
 KiiTopicMessage.ts \
 KiiGCMMessage.ts \
 KiiAPNsMessage.ts \
