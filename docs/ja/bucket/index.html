@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>バケツ - KiiLib-TypeScript(JavaScript) ドキュメント</title>
+  <link rel="stylesheet" type="text/css" href="../style.css"/>
+</head>
+<body>
+  <header>
+    <h1>バケツ - KiiLib-TypeScript(JavaScript) ドキュメント</h1>
+  </header>
+
+  <section>
+    <p>バケツ(KiiBucket)に関する操作は、BucketAPIを通じて行います。</p>
+  </section>
+
+  <section class="contents">
+    <ul class="cardGroup">
+      <li class="card">
+        <h2>バケツ内のオブジェクトを検索する</h2>
+        <p>バケツ内のオブジェクトを検索するには、BucketAPIのquery()メソッドを使用します。</p>
+        <p>次は、バケツ内のオブジェクトを全件取得する例です。</p>
+          <pre><code>
+var context = new Kii.KiiContext(APP_ID, APP_KEY, BASE_URL);
+var api = new Kii.KiiAppAPI(context);
+// userは別途作成しているものとします。
+var bucket = new Kii.KiiBucket(user, BUCKET_NAME);
+var params = new Kii.QueryParams(Kii.KiiClause.all());
+  
+var ret = api.bucketAPI().query(bucket, params, {
+  success : function(results, params) {
+    for (var i = 0 ; i < results.length ; ++i) {
+      console.log(results[i].data.day);
+    }
+  },
+  error: function (status, body) {
+    console.log("Error HTTP status=" + status);
+  }
+});
+</code></pre>                      
+        <p>Google Apps Scriptでは、ブロッキング呼び出しが可能です。戻り値のオブジェクトは次のようになっています。
+          <dl>
+            <dt>results</dt><dd>取得したKiiObjectの配列</dd>
+            <dt>params</dt><dd>検索に使用したQueryParams。検索結果に続きが存在するかは、このオブジェクトのhasNext()メソッドで確認できます。</dd>
+          </dl>
+          <pre><code>
+var context = new Kii.KiiContext(APP_ID, APP_KEY, BASE_URL);
+var api = new Kii.KiiAppAPI(context);
+// userは別途作成しているものとします。
+var bucket = new Kii.KiiBucket(user, BUCKET_NAME);
+var params = new Kii.QueryParams(Kii.KiiClause.all());
+  
+var ret = api.bucketAPI().query(bucket, params);
+var list = ret.results;
+for (var i = 0 ; i < list.length ; ++i) {
+  Logger.log(list[i].data.day);
+}              
+</code></pre>
+        </p>
+        
+      </li>
+    </ul>
+  </section>
+
+  <footer>
+    2015 fkm
+  </footer>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head> 
+  <title>準備 - KiiLib-TypeScript(JavaScript) ドキュメント</title>
+  <link rel="stylesheet" type="text/css" href="style.css"/> 
+</head>
+<body>
+  <header>
+    <h1>準備 - KiiLib-TypeScript(JavaScript) ドキュメント</h1>
+  </header>  
+
+  <section>
+    <p>本ライブラリはTypeScriptで記述されており、プラットフォームに応じたビルドを提供しています。</p>
+  </section>
+
+  <section class="card">
+    <h2>jQuery</h2>
+    <p>通信部分をjQueryのajax()を用いたビルドです。Webアプリケーションで本ライブラリを使用する時には本ビルドを使います。</p>
+    <h3>手順</h3>
+    <ol>
+      <li>リポジトリのbin/KiiLib-jquery.jsをコピーします。</li>
+      <li>次のタグをHTMLに追加します。KiiLib-jquery.jsのパスは適宜変更してください。
+        <pre><code>
+&lt;script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js">&lt;/script>
+&lt;script type="text/javascript" src="javascripts/KiiLib-jquery.js">&lt;/script>
+        </code></pre></li>
+    </ol>
+  </section>
+
+  <section class="card">
+    <h2>Google Apps Script</h2>
+    <p>Google Apps Script用のビルドです。Googleスプレッドシートなどで本ライブラリの機能を使用することができます。</p>
+    <h3>手順(Google スプレッドシートの例)</h3>
+    <ol>
+      <li>Google スプレッドシートで、[ツール] -> [スクリプトエディタ]を選び、スクリプトエディタを開きます</li>
+      <li>スクリプトエディタで、[ファイル] -> [新規作成] -> [スクリプト ファイル]を選び、空のスクリプトファイルを追加します。</li>
+      <li>リポジトリのbin/KiiLib-gas.jsをテキストエディタなどで開き、内容をコピーします。(<a href="https://github.com/fkmhrk/kiilib_typescript/blob/master/bin/KiiLib-gas.js">GitHubのファイルブラウザ</a>でコピーするのが楽でしょう)</li>      
+      <li>追加したスクリプトファイルに、先ほどコピーした内容を張り付けます。</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>AppAPIオブジェクトの作成</h2>
+    <p>本ライブラリでは、Kii Cloudとの通信はすべてAppAPIオブジェクトと、AppAPIオブジェクトから提供される各APIオブジェクト経由で行います。</p>
+    <p>AppAPIオブジェクトを作成するには、アプリ情報などを保持しているContextオブジェクトを作成した後、AppAPIオブジェクトを作成します。
+      <pre><code>
+var context = new Kii.KiiContext(APP_ID, APP_KEY, BASE_URL);
+var api = new Kii.KiiAppAPI(context);
+</code></pre>            
+      KiiContextのコンストラクタには次の値を指定します。
+      <dl>
+        <dt>APP_ID</dt><dd>Kii Cloudで作成したアプリのApp ID</dd>
+        <dt>APP_KEY</dt><dd>Kii Cloudで作成したアプリのApp Key</dd>
+        <dt>BASE_URL</dt>
+        <dd>サーバーのURL。
+        <ul>
+          <li>日本サーバー：'https://api-jp.kii.com/api'を指定</li>
+          <li>アメリカサーバー：'https://api.kii.com/api'を指定</li>  
+        </ul></dd>
+    </p>
+  </section>
+
+</body>
+</html>

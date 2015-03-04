@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head> 
+  <title>データ - KiiLib-TypeScript(JavaScript) ドキュメント</title>
+  <link rel="stylesheet" type="text/css" href="style.css"/> 
+</head>
+<body>
+  <header>
+    <h1>データ - KiiLib-TypeScript(JavaScript) ドキュメント</h1>
+  </header>  
+
+  <section>
+    <p>Kii Cloudにはさまざまなデータが存在します。本ライブラリでは、そのデータに応じた型が用意されています。ここでは、そのデータの生成方法などを解説します。</p>
+  </section>
+
+  <section class="card">
+    <h2>KiiUser</h2>
+    <p>アプリのユーザーを表します。</p>
+    <h3>生成方法</h3>
+    <p>ユーザーIDを指定してnewで生成します。
+      <pre><code>
+          var user = new Kii.KiiUser('userID1122');
+      </code></pre>
+    </p>
+  </section>
+
+  <section class="card">
+    <h2>KiiGroup</h2>
+    <p>アプリ内のグループを表します。</p>
+    <h3>生成方法</h3>
+    <p>グループIDを指定してnewで生成します。
+      <pre><code>
+          var group = new Kii.KiiGroup('groupID1122');
+      </code></pre>
+    </p>
+  </section>  
+
+  <section class="card">
+    <h2>KiiThing</h2>
+    <p>モノ(Thing)を表します。</p>
+    <h3>生成方法</h3>
+    <p>Thing IDを指定してnewで生成します。
+      <pre><code>
+          var thing = new Kii.KiiThing('thingID1122');
+      </code></pre>
+    </p>
+  </section>
+
+  <section class="card">
+    <h2>KiiBucket</h2>
+    <p>指定したスコープのバケツを表します。</p>
+    <h3>生成方法</h3>
+    <p>スコープ(所有者)とバケツ名を指定してnewで生成します。
+      <pre><code>
+          // ユーザースコープ
+          var user = new Kii.KiiUser('userID1122');
+          var bucket = new Kii.KiiBucket(user, 'scores');
+
+          // グループスコープ
+          var group = new Kii.KiiGroup('groupID1122');
+          var bucket = new Kii.KiiBucket(group, 'scores');
+
+          // Thingスコープ
+          var thing = new Kii.KiiThing('thingID1122');
+          var bucket = new Kii.KiiBucket(thing, 'temp');
+
+          // アプリスコープ
+          var app = new Kii.KiiApp();
+          var bucket = new Kii.KiiBucket(app, 'board');
+      </code></pre>
+    </p>
+  </section>
+
+  <section class="card">
+    <h2>KiiObject</h2>
+    <p>指定したバケツ内のオブジェクトを表します。</p>
+    <h3>生成方法</h3>
+    <p>バケツとオブジェクトIDとフィールドを指定してnewで生成します。後にサーバーからデータを取得する場合はフィールドに{}を指定しましょう。
+      <pre><code>
+          // ユーザースコープ
+          var user = new Kii.KiiUser('userID1122');
+          var bucket = new Kii.KiiBucket(user, 'scores');
+          var obj = new Kii.KiiObject(bucket, 'objID2233', {});
+
+          // グループスコープ
+          var group = new Kii.KiiGroup('groupID1122');
+          var bucket = new Kii.KiiBucket(group, 'scores');
+          var obj = new Kii.KiiObject(bucket, 'objID2233', {});
+
+          // Thingスコープ
+          var thing = new Kii.KiiThing('thingID1122');
+          var bucket = new Kii.KiiBucket(thing, 'temp');
+          var obj = new Kii.KiiObject(bucket, 'objID2233', {});
+
+          // アプリスコープ
+          var app = new Kii.KiiApp();
+          var bucket = new Kii.KiiBucket(app, 'board');
+          var obj = new Kii.KiiObject(bucket, 'objID2233', {});
+      </code></pre>
+    </p>
+  </section>
+
+  <section class="card">
+    <h2>KiiTopic</h2>
+    <p>指定したスコープのトピックスを表します。</p>
+    <h3>生成方法</h3>
+    <p>スコープ(所有者)とトピックス名を指定してnewで生成します。
+      <pre><code>
+          // ユーザースコープ
+          var user = new Kii.KiiUser('userID1122');
+          var topic = new Kii.KiiBucket(user, 'inbox');
+
+          // グループスコープ
+          var group = new Kii.KiiGroup('groupID1122');
+          var topic = new Kii.KiiTopic(group, 'inbox');
+
+          // アプリスコープ
+          var app = new Kii.KiiApp();
+          var topic = new Kii.KiiTopic(app, 'inbox');
+      </code></pre>
+    </p>
+  </section>  
+</body>
+</html>
