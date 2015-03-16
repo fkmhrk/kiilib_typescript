@@ -11,6 +11,9 @@ module Kii {
         update(obj : KiiObject) : KiiObject;
 	update(obj : KiiObject, callback : ObjectCallback);
 
+        updatePatch(obj : KiiObject, patch : any) : KiiObject;
+        updatePatch(obj : KiiObject, patch : any, callback : ObjectCallback);
+
         deleteObject(obj : KiiObject);
 	deleteObject(obj : KiiObject, callback : KiiCallback);
     }
