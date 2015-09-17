@@ -50,6 +50,40 @@ module Kii {
             return respObject;
 	}
 
+        getById(bucket : KiiBucket, id : string, callback? : ObjectCallback) {
+	    var c : KiiContext = this.context;
+	    var url = c.getServerUrl() + 
+		    '/apps/'+ c.getAppId() +
+		    bucket.getPath() +
+		    '/objects/' + id;
+	    var client = c.getNewClient();
+	    client.setUrl(url);
+	    client.setMethod('GET');
+	    client.setKiiHeader(c, true);
+	    client.setContentType('application/json');
+
+            var respObject : KiiObject;
+	    client.send({
+	        onReceive : (status : number, headers : any, body : any) => {
+                    if (callback === undefined) {
+                        respObject = new KiiObject(bucket, id, body);
+                        return;
+                    }
+		    if (callback.success === undefined) { return; }
+		    callback.success(new KiiObject(bucket, id, body));
+		},
+		onError : (status : number, body : any) => {
+                    if (callback === undefined) {
+                        throw new Error(body);
+                        return;
+                    }
+		    if (callback.error === undefined) { return; }	    
+		    callback.error(status, body);
+		}		
+	    });
+            return respObject;            
+        }
+
 	update(obj : KiiObject, callback? : ObjectCallback) {
             var c = this.context;
             var url = c.getServerUrl() +
@@ -65,6 +99,45 @@ module Kii {
             var respObject : KiiObject;
             client.sendJson(obj.data, {
 		onReceive : (status : number, headers : any, body : any) => {
+                    if (callback === undefined) {
+                        respObject = obj;
+                        return;
+                    }
+                    if (callback.success === undefined) { return; }
+                    callback.success(obj);
+                },
+                onError : (status : number, body : any) => {
+                    if (callback === undefined) {
+                        throw new Error(body);
+                        return;
+                    }
+                    if (callback.error === undefined) { return; }
+                    callback.error(status, body);
+                }
+	    });
+            return respObject;
+	}
+
+        updatePatch(obj : KiiObject, patch : any, callback? : ObjectCallback) {
+            var c = this.context;
+            var url = c.getServerUrl() +
+		'/apps/' + c.getAppId() +
+		obj.getPath();
+
+            var client = c.getNewClient();
+            client.setUrl(url);
+            client.setMethod('POST');
+            client.setKiiHeader(c, true);
+            client.setHeader('X-HTTP-Method-Override', 'PATCH');
+            client.setContentType('application/json');
+
+            var respObject : KiiObject;
+            client.sendJson(patch, {
+		onReceive : (status : number, headers : any, body : any) => {
+                    // apply patch
+                    for (var k in patch) {
+                        obj.data[k] = patch[k];
+                    }
                     if (callback === undefined) {
                         respObject = obj;
                         return;
