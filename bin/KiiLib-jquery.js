@@ -1876,3 +1876,7 @@ var jquery;
     })();
     Kii.KiiAppAPI = KiiAppAPI;
 })(Kii || (Kii = {}));
+
+if (typeof module != 'undefined' && module.exports) {
+  module.exports = Kii;
+}
