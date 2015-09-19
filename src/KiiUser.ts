@@ -14,5 +14,9 @@ module Kii {
 	public getPath() {
 	    return '/users/' + this.id;
 	}
+
+        public getSubject() {
+            return 'UserID:' + this.id;
+        }
     }
 }

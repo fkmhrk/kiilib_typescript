@@ -14,19 +14,15 @@ var jquery;
         JQueryClient.prototype.setUrl = function (url) {
             this.url = url;
         };
-
         JQueryClient.prototype.setMethod = function (method) {
             this.method = method;
         };
-
         JQueryClient.prototype.setContentType = function (value) {
             this.setHeader('content-type', value);
         };
-
         JQueryClient.prototype.setHeader = function (key, value) {
             this.headers[key] = value;
         };
-
         JQueryClient.prototype.setKiiHeader = function (context, authRequired) {
             this.setHeader('x-kii-appid', context.getAppId());
             this.setHeader('x-kii-appkey', context.getAppKey());
@@ -34,7 +30,6 @@ var jquery;
                 this.setHeader('authorization', 'bearer ' + context.getAccessToken());
             }
         };
-
         JQueryClient.prototype.sendText = function (text, callback) {
             var data = {
                 url: this.url,
@@ -47,11 +42,9 @@ var jquery;
             };
             this.sendRequest(data, callback);
         };
-
         JQueryClient.prototype.sendJson = function (json, callback) {
             this.sendText(JSON.stringify(json), callback);
         };
-
         JQueryClient.prototype.send = function (callback) {
             var data = {
                 url: this.url,
@@ -63,12 +56,13 @@ var jquery;
             };
             this.sendRequest(data, callback);
         };
-
         JQueryClient.prototype.sendRequest = function (data, callback) {
-            $.ajax(data).done(function (data_, status, data) {
+            $.ajax(data)
+                .done(function (data_, status, data) {
                 if (data.status == 204) {
                     callback.onReceive(data.status, data.getAllResponseHeaders(), {});
-                } else {
+                }
+                else {
                     callback.onReceive(data.status, data.getAllResponseHeaders(), JSON.parse(data.responseText));
                 }
             }).fail(function (data) {
@@ -88,7 +82,6 @@ var jquery;
             this.appId = appId;
             this.appKey = appKey;
             this.url = url;
-
             this.clientFactory = function () {
                 return new jquery.JQueryClient();
             };
@@ -96,35 +89,27 @@ var jquery;
         KiiContext.prototype.getAppId = function () {
             return this.appId;
         };
-
         KiiContext.prototype.getAppKey = function () {
             return this.appKey;
         };
-
         KiiContext.prototype.getServerUrl = function () {
             return this.url;
         };
-
         KiiContext.prototype.setAccessToken = function (value) {
             this.token = value;
         };
-
         KiiContext.prototype.getAccessToken = function () {
             return this.token;
         };
-
         KiiContext.prototype.setDeviceId = function (value) {
             this.deviceId = value;
         };
-
         KiiContext.prototype.getDeviceId = function () {
             return this.deviceId;
         };
-
         KiiContext.prototype.setClientFactory = function (factory) {
             this.clientFactory = factory;
         };
-
         KiiContext.prototype.getNewClient = function () {
             return this.clientFactory();
         };
@@ -153,9 +138,11 @@ var jquery;
         KiiUser.prototype.getId = function () {
             return this.id;
         };
-
         KiiUser.prototype.getPath = function () {
             return '/users/' + this.id;
+        };
+        KiiUser.prototype.getSubject = function () {
+            return 'UserID:' + this.id;
         };
         return KiiUser;
     })();
@@ -181,9 +168,11 @@ var jquery;
             }
             this.members.splice(index, 1);
         };
-
         KiiGroup.prototype.getPath = function () {
             return '/groups/' + this.id;
+        };
+        KiiGroup.prototype.getSubject = function () {
+            return 'GroupID:' + this.id;
         };
         return KiiGroup;
     })();
@@ -199,7 +188,6 @@ var jquery;
         KiiBucket.prototype.getName = function () {
             return this.name;
         };
-
         KiiBucket.prototype.getPath = function () {
             return this.owner.getPath() + '/buckets/' + this.name;
         };
@@ -219,9 +207,9 @@ var jquery;
         KiiObject.prototype.getId = function () {
             return this.id;
         };
-
         KiiObject.prototype.getPath = function () {
-            return this.bucket.getPath() + '/objects/' + this.id;
+            return this.bucket.getPath() +
+                '/objects/' + this.id;
         };
         return KiiObject;
     })();
@@ -237,7 +225,6 @@ var jquery;
         KiiTopic.prototype.getName = function () {
             return this.name;
         };
-
         KiiTopic.prototype.getPath = function () {
             return this.owner.getPath() + '/topics/' + this.name;
         };
@@ -254,7 +241,6 @@ var jquery;
         KiiThing.prototype.getId = function () {
             return this.id;
         };
-
         KiiThing.prototype.getPath = function () {
             return '/things/' + this.id;
         };
@@ -272,7 +258,6 @@ var jquery;
         KiiGCMMessage.prototype.setEnabled = function (value) {
             this.enable = value;
         };
-
         KiiGCMMessage.prototype.toJson = function () {
             var json = {
                 "enabled": this.enable
@@ -280,7 +265,6 @@ var jquery;
             if (Object.keys(this.data).length > 0) {
                 json['data'] = this.data;
             }
-
             return json;
         };
         return KiiGCMMessage;
@@ -297,7 +281,6 @@ var jquery;
         KiiAPNsMessage.prototype.setEnabled = function (value) {
             this.enable = value;
         };
-
         KiiAPNsMessage.prototype.toJson = function () {
             var json = {
                 "enabled": this.enable
@@ -305,7 +288,6 @@ var jquery;
             if (Object.keys(this.data).length > 0) {
                 json['data'] = this.data;
             }
-
             return json;
         };
         return KiiAPNsMessage;
@@ -328,45 +310,36 @@ var jquery;
             this.sendOrigin = false;
             this.sendObjectScope = true;
             this.sendTopicID = true;
-
             this.gcm = new Kii.KiiGCMMessage();
             this.apns = new Kii.KiiAPNsMessage();
         }
         KiiTopicMessage.prototype.setSendToDevelopment = function (value) {
             this.sendToDevelopment = value;
         };
-
         KiiTopicMessage.prototype.setSendToProduction = function (value) {
             this.sendToProduction = value;
         };
-
         KiiTopicMessage.prototype.setPushMessageType = function (value) {
             this.pushMessageType = value;
         };
-
         KiiTopicMessage.prototype.setSendAppID = function (value) {
             this.sendAppID = value;
         };
-
         KiiTopicMessage.prototype.setSendSender = function (value) {
             this.sendSender = value;
         };
-
         KiiTopicMessage.prototype.setSendWhen = function (value) {
             this.sendWhen = value;
         };
         KiiTopicMessage.prototype.setSSendOrigin = function (value) {
             this.sendOrigin = value;
         };
-
         KiiTopicMessage.prototype.setSendObjectScope = function (value) {
             this.sendObjectScope = value;
         };
-
         KiiTopicMessage.prototype.setSendTopicID = function (value) {
             this.sendTopicID = value;
         };
-
         KiiTopicMessage.prototype.toJson = function () {
             var json = {
                 "sendToDevelopment": this.sendToDevelopment,
@@ -414,33 +387,26 @@ var jquery;
         KiiClause.all = function () {
             return new KiiClause('all');
         };
-
         KiiClause.equals = function (field, value) {
             var c = new KiiClause('eq');
             c.clause['field'] = field;
             c.clause['value'] = value;
-
             return c;
         };
-
         KiiClause.greaterThan = function (field, value, include) {
             var c = new KiiClause('range');
             c.clause['field'] = field;
             c.clause['lowerLimit'] = value;
             c.clause['lowerIncluded'] = include;
-
             return c;
         };
-
         KiiClause.lessThan = function (field, value, include) {
             var c = new KiiClause('range');
             c.clause['field'] = field;
             c.clause['upperLimit'] = value;
             c.clause['upperIncluded'] = include;
-
             return c;
         };
-
         KiiClause.range = function (field, fromValue, fromInclude, toValue, toInclude) {
             var c = new KiiClause('range');
             c.clause['field'] = field;
@@ -448,46 +414,35 @@ var jquery;
             c.clause['lowerIncluded'] = fromInclude;
             c.clause['upperLimit'] = toValue;
             c.clause['upperIncluded'] = toInclude;
-
             return c;
         };
-
         KiiClause.inClause = function (field, values) {
             var c = new KiiClause('in');
             c.clause['field'] = field;
             c.clause['values'] = values;
-
             return c;
         };
-
         KiiClause.not = function (clause) {
             var c = new KiiClause('not');
             c.clause['clause'] = clause.toJson();
-
             return c;
         };
-
         KiiClause.andClause = function (array) {
             var c = new KiiClause('and');
             c.clause['clauses'] = KiiClause.toClauses(array);
-
             return c;
         };
-
         KiiClause.orClause = function (array) {
             var c = new KiiClause('or');
             c.clause['clauses'] = KiiClause.toClauses(array);
-
             return c;
         };
-
         KiiClause.toClauses = function (array) {
             for (var i = 0; i < array.length; ++i) {
                 array[i] = array[i].toJson();
             }
             return array;
         };
-
         KiiClause.prototype.toJson = function () {
             return this.clause;
         };
@@ -510,27 +465,22 @@ var jquery;
             this.orderBy = field;
             this.descending = false;
         };
-
         QueryParams.prototype.sortByDesc = function (field) {
             this.orderBy = field;
             this.descending = true;
         };
-
         QueryParams.prototype.setLimit = function (limit) {
             this.limit = limit;
         };
-
         QueryParams.prototype.setPaginationKey = function (key) {
             if (typeof key == 'undefined') {
                 key = null;
             }
             this.paginationKey = key;
         };
-
         QueryParams.prototype.hasNext = function () {
             return this.paginationKey != null;
         };
-
         QueryParams.prototype.toJson = function () {
             var query = {
                 'clause': this.clause.toJson()
@@ -539,7 +489,6 @@ var jquery;
                 query['orderBy'] = this.orderBy;
                 query['descending'] = this.descending;
             }
-
             var json = {
                 'bucketQuery': query
             };
@@ -549,7 +498,6 @@ var jquery;
             if (this.paginationKey != null) {
                 json['paginationKey'] = this.paginationKey;
             }
-
             return json;
         };
         return QueryParams;
@@ -595,13 +543,13 @@ var jquery;
         }
         KiiUserAPI.prototype.fetchUser = function (id, callback) {
             var c = this.context;
-            var url = c.getServerUrl() + '/apps/' + c.getAppId() + '/users/' + id;
-
+            var url = c.getServerUrl() +
+                '/apps/' + c.getAppId() +
+                '/users/' + id;
             var client = c.getNewClient();
             client.setUrl(url);
             client.setMethod('GET');
             client.setKiiHeader(c, true);
-
             var respUser;
             client.send({
                 onReceive: function (status, headers, body) {
@@ -629,21 +577,21 @@ var jquery;
             });
             return respUser;
         };
-
         KiiUserAPI.prototype.changePassword = function (user, current, newPassword, callback) {
             var c = this.context;
-            var url = c.getServerUrl() + '/apps/' + c.getAppId() + user.getPath() + '/password';
+            var url = c.getServerUrl() +
+                '/apps/' + c.getAppId() +
+                user.getPath() +
+                '/password';
             var body = {
                 'oldPassword': current,
                 'newPassword': newPassword
             };
-
             var client = c.getNewClient();
             client.setUrl(url);
             client.setMethod('PUT');
             client.setContentType('application/vnd.kii.ChangePasswordRequest+json');
             client.setKiiHeader(c, true);
-
             client.sendJson(body, {
                 onReceive: function (status, headers, body) {
                     if (callback === undefined) {
@@ -666,16 +614,16 @@ var jquery;
                 }
             });
         };
-
         KiiUserAPI.prototype.resetPassword = function (email, callback) {
             var c = this.context;
-            var url = c.getServerUrl() + '/apps/' + c.getAppId() + '/users/EMAIL:' + email + '/password/request-reset';
-
+            var url = c.getServerUrl() +
+                '/apps/' + c.getAppId() +
+                '/users/EMAIL:' + email +
+                '/password/request-reset';
             var client = c.getNewClient();
             client.setUrl(url);
             client.setMethod('POST');
             client.setKiiHeader(c, false);
-
             client.send({
                 onReceive: function (status, headers, body) {
                     if (callback === undefined) {
@@ -698,17 +646,16 @@ var jquery;
                 }
             });
         };
-
         KiiUserAPI.prototype.update = function (user, callback) {
             var c = this.context;
-            var url = c.getServerUrl() + '/apps/' + c.getAppId() + user.getPath();
-
+            var url = c.getServerUrl() +
+                '/apps/' + c.getAppId() +
+                user.getPath();
             var client = c.getNewClient();
             client.setUrl(url);
             client.setMethod('POST');
             client.setContentType('application/vnd.kii.UserUpdateRequest+json');
             client.setKiiHeader(c, true);
-
             var respUser;
             client.sendJson(user.data, {
                 onReceive: function (status, headers, body) {
@@ -734,23 +681,23 @@ var jquery;
             });
             return respUser;
         };
-
         KiiUserAPI.prototype.updateEmail = function (user, email, verified, callback) {
             var c = this.context;
-            var url = c.getServerUrl() + '/apps/' + c.getAppId() + user.getPath() + '/email-address';
+            var url = c.getServerUrl() +
+                '/apps/' + c.getAppId() +
+                user.getPath() +
+                '/email-address';
             var body = {
                 'emailAddress': email
             };
             if (verified) {
                 body['verified'] = true;
             }
-
             var client = c.getNewClient();
             client.setUrl(url);
             client.setMethod('PUT');
             client.setContentType('application/vnd.kii.EmailAddressModificationRequest+json');
             client.setKiiHeader(c, true);
-
             var respUser;
             client.sendJson(body, {
                 onReceive: function (status, headers, body) {
@@ -780,23 +727,23 @@ var jquery;
             });
             return respUser;
         };
-
         KiiUserAPI.prototype.updatePhone = function (user, phone, verified, callback) {
             var c = this.context;
-            var url = c.getServerUrl() + '/apps/' + c.getAppId() + user.getPath() + '/phone-number';
+            var url = c.getServerUrl() +
+                '/apps/' + c.getAppId() +
+                user.getPath() +
+                '/phone-number';
             var body = {
                 'phoneNumber': phone
             };
             if (verified) {
                 body['verified'] = true;
             }
-
             var client = c.getNewClient();
             client.setUrl(url);
             client.setMethod('PUT');
             client.setContentType('application/vnd.kii.PhoneNumberModificationRequest+json');
             client.setKiiHeader(c, true);
-
             var respUser;
             client.sendJson(body, {
                 onReceive: function (status, headers, body) {
@@ -826,20 +773,20 @@ var jquery;
             });
             return respUser;
         };
-
         KiiUserAPI.prototype.verifyPhone = function (user, code, callback) {
             var c = this.context;
-            var url = c.getServerUrl() + '/apps/' + c.getAppId() + user.getPath() + '/phone-number/verify';
+            var url = c.getServerUrl() +
+                '/apps/' + c.getAppId() +
+                user.getPath() +
+                '/phone-number/verify';
             var body = {
                 'verificationCode': code
             };
-
             var client = c.getNewClient();
             client.setUrl(url);
             client.setMethod('POST');
             client.setContentType('application/vnd.kii.AddressVerificationRequest+json');
             client.setKiiHeader(c, true);
-
             var respUser;
             client.sendJson(body, {
                 onReceive: function (status, headers, body) {
@@ -866,20 +813,21 @@ var jquery;
             });
             return respUser;
         };
-
         KiiUserAPI.prototype.subscribe = function (user, target, callback) {
             var targetPath = target.getPath();
             if (targetPath.lastIndexOf('/buckets', 0) == 0) {
                 targetPath += '/filters/all';
             }
             var c = this.context;
-            var url = c.getServerUrl() + '/apps/' + c.getAppId() + targetPath + '/push/subscriptions' + user.getPath();
-
+            var url = c.getServerUrl() +
+                '/apps/' + c.getAppId() +
+                targetPath +
+                '/push/subscriptions' +
+                user.getPath();
             var client = c.getNewClient();
             client.setUrl(url);
             client.setMethod('POST');
             client.setKiiHeader(c, true);
-
             client.send({
                 onReceive: function (status, headers, body) {
                     if (callback === undefined) {
@@ -902,20 +850,21 @@ var jquery;
                 }
             });
         };
-
         KiiUserAPI.prototype.unsubscribe = function (user, target, callback) {
             var targetPath = target.getPath();
             if (targetPath.lastIndexOf('/buckets', 0) == 0) {
                 targetPath += '/filters/all';
             }
             var c = this.context;
-            var url = c.getServerUrl() + '/apps/' + c.getAppId() + targetPath + '/push/subscriptions' + user.getPath();
-
+            var url = c.getServerUrl() +
+                '/apps/' + c.getAppId() +
+                targetPath +
+                '/push/subscriptions' +
+                user.getPath();
             var client = c.getNewClient();
             client.setUrl(url);
             client.setMethod('DELETE');
             client.setKiiHeader(c, true);
-
             client.send({
                 onReceive: function (status, headers, body) {
                     if (callback === undefined) {
@@ -955,7 +904,9 @@ var jquery;
         }
         KiiGroupAPI.prototype.create = function (name, owner, members, callback) {
             var c = this.context;
-            var url = c.getServerUrl() + '/apps/' + c.getAppId() + '/groups';
+            var url = c.getServerUrl() +
+                '/apps/' + c.getAppId() +
+                '/groups';
             var idList = new Array();
             members.forEach(function (item) {
                 idList.push(item.id);
@@ -965,13 +916,11 @@ var jquery;
                 'owner': owner.id,
                 'members': idList
             };
-
             var client = c.getNewClient();
             client.setUrl(url);
             client.setMethod('POST');
             client.setContentType('application/vnd.kii.GroupCreationRequest+json');
             client.setKiiHeader(c, true);
-
             var respGroup;
             client.sendJson(body, {
                 onReceive: function (status, headers, body) {
@@ -998,16 +947,15 @@ var jquery;
             });
             return respGroup;
         };
-
         KiiGroupAPI.prototype.fetchGroup = function (id, callback) {
             var c = this.context;
-            var url = c.getServerUrl() + '/apps/' + c.getAppId() + '/groups/' + id;
-
+            var url = c.getServerUrl() +
+                '/apps/' + c.getAppId() +
+                '/groups/' + id;
             var client = c.getNewClient();
             client.setUrl(url);
             client.setMethod('GET');
             client.setKiiHeader(c, true);
-
             var respGroup;
             client.send({
                 onReceive: function (status, headers, body) {
@@ -1039,17 +987,17 @@ var jquery;
             });
             return respGroup;
         };
-
         KiiGroupAPI.prototype.updateGroupName = function (group, name, callback) {
             var c = this.context;
-            var url = c.getServerUrl() + '/apps/' + c.getAppId() + group.getPath() + '/name';
-
+            var url = c.getServerUrl() +
+                '/apps/' + c.getAppId() +
+                group.getPath() +
+                '/name';
             var client = c.getNewClient();
             client.setUrl(url);
             client.setMethod('PUT');
             client.setContentType('text/plain');
             client.setKiiHeader(c, true);
-
             var respGroup;
             client.sendText(name, {
                 onReceive: function (status, headers, body) {
@@ -1076,20 +1024,20 @@ var jquery;
             });
             return respGroup;
         };
-
         KiiGroupAPI.prototype.updateGroupOwner = function (group, owner, callback) {
             var c = this.context;
-            var url = c.getServerUrl() + '/apps/' + c.getAppId() + group.getPath() + '/owner';
+            var url = c.getServerUrl() +
+                '/apps/' + c.getAppId() +
+                group.getPath() +
+                '/owner';
             var body = {
                 'owner': owner.id
             };
-
             var client = c.getNewClient();
             client.setUrl(url);
             client.setMethod('PUT');
             client.setContentType('application/vnd.kii.GroupOwnerChangeRequest+json');
             client.setKiiHeader(c, true);
-
             var respGroup;
             client.sendJson(body, {
                 onReceive: function (status, headers, body) {
@@ -1116,16 +1064,15 @@ var jquery;
             });
             return respGroup;
         };
-
         KiiGroupAPI.prototype.deleteGroup = function (group, callback) {
             var c = this.context;
-            var url = c.getServerUrl() + '/apps/' + c.getAppId() + group.getPath();
-
+            var url = c.getServerUrl() +
+                '/apps/' + c.getAppId() +
+                group.getPath();
             var client = c.getNewClient();
             client.setUrl(url);
             client.setMethod('DELETE');
             client.setKiiHeader(c, true);
-
             client.send({
                 onReceive: function (status, headers, body) {
                     if (callback === undefined) {
@@ -1148,25 +1095,22 @@ var jquery;
                 }
             });
         };
-
         KiiGroupAPI.prototype.getJoinedGroups = function (user, callback) {
             return this.getGroups(user, 'is_member', callback);
         };
-
         KiiGroupAPI.prototype.getOwnedGroups = function (user, callback) {
             return this.getGroups(user, 'owner', callback);
         };
-
         KiiGroupAPI.prototype.getGroups = function (user, query, callback) {
             var _this = this;
             var c = this.context;
-            var url = c.getServerUrl() + '/apps/' + c.getAppId() + '/groups?' + query + '=' + user.getId();
-
+            var url = c.getServerUrl() +
+                '/apps/' + c.getAppId() +
+                '/groups?' + query + '=' + user.getId();
             var client = c.getNewClient();
             client.setUrl(url);
             client.setMethod('GET');
             client.setKiiHeader(c, true);
-
             var respArray;
             client.send({
                 onReceive: function (status, headers, body) {
@@ -1197,26 +1141,24 @@ var jquery;
             });
             return respArray;
         };
-
         KiiGroupAPI.prototype.toKiiGroup = function (item) {
             var id = item['groupID'];
             var name = item['name'];
             var ownerId = item['owner'];
-
             var group = new Kii.KiiGroup(id);
             group.name = name;
             return group;
         };
-
         KiiGroupAPI.prototype.addMember = function (group, user, callback) {
             var c = this.context;
-            var url = c.getServerUrl() + '/apps/' + c.getAppId() + group.getPath() + '/members/' + user.id;
-
+            var url = c.getServerUrl() +
+                '/apps/' + c.getAppId() +
+                group.getPath() +
+                '/members/' + user.id;
             var client = c.getNewClient();
             client.setUrl(url);
             client.setMethod('PUT');
             client.setKiiHeader(c, true);
-
             var respGroup;
             client.send({
                 onReceive: function (status, headers, body) {
@@ -1243,16 +1185,16 @@ var jquery;
             });
             return respGroup;
         };
-
         KiiGroupAPI.prototype.removeMember = function (group, user, callback) {
             var c = this.context;
-            var url = c.getServerUrl() + '/apps/' + c.getAppId() + group.getPath() + '/members/' + user.id;
-
+            var url = c.getServerUrl() +
+                '/apps/' + c.getAppId() +
+                group.getPath() +
+                '/members/' + user.id;
             var client = c.getNewClient();
             client.setUrl(url);
             client.setMethod('DELETE');
             client.setKiiHeader(c, true);
-
             var respGroup;
             client.send({
                 onReceive: function (status, headers, body) {
@@ -1279,16 +1221,16 @@ var jquery;
             });
             return respGroup;
         };
-
         KiiGroupAPI.prototype.fetchMembers = function (group, callback) {
             var c = this.context;
-            var url = c.getServerUrl() + '/apps/' + c.getAppId() + group.getPath() + '/members';
-
+            var url = c.getServerUrl() +
+                '/apps/' + c.getAppId() +
+                group.getPath() +
+                '/members';
             var client = c.getNewClient();
             client.setUrl(url);
             client.setMethod('GET');
             client.setKiiHeader(c, true);
-
             var respArray;
             client.send({
                 onReceive: function (status, headers, body) {
@@ -1340,20 +1282,20 @@ var jquery;
         }
         KiiBucketAPI.prototype.query = function (bucket, params, callback) {
             var c = this.context;
-            var url = c.getServerUrl() + '/apps/' + c.getAppId() + bucket.getPath() + '/query';
-
+            var url = c.getServerUrl() +
+                '/apps/' + c.getAppId() +
+                bucket.getPath() +
+                '/query';
             var client = c.getNewClient();
             client.setUrl(url);
             client.setMethod('POST');
             client.setKiiHeader(c, true);
             client.setContentType('application/vnd.kii.QueryRequest+json');
-
             var resp;
             client.sendJson(params.toJson(), {
                 onReceive: function (status, headers, body) {
                     var nextPaginationKey = body['nextPaginationKey'];
                     params.setPaginationKey(nextPaginationKey);
-
                     var respArray = body['results'];
                     var result = new Array();
                     for (var i = 0; i < respArray.length; ++i) {
@@ -1406,14 +1348,15 @@ var jquery;
         }
         KiiObjectAPI.prototype.create = function (bucket, data, callback) {
             var c = this.context;
-            var url = c.getServerUrl() + '/apps/' + c.getAppId() + bucket.getPath() + '/objects';
-
+            var url = c.getServerUrl() +
+                '/apps/' + c.getAppId() +
+                bucket.getPath() +
+                '/objects';
             var client = c.getNewClient();
             client.setUrl(url);
             client.setMethod('POST');
             client.setKiiHeader(c, true);
             client.setContentType('application/json');
-
             var respObject;
             client.sendJson(data, {
                 onReceive: function (status, headers, body) {
@@ -1440,17 +1383,52 @@ var jquery;
             });
             return respObject;
         };
-
+        KiiObjectAPI.prototype.getById = function (bucket, id, callback) {
+            var c = this.context;
+            var url = c.getServerUrl() +
+                '/apps/' + c.getAppId() +
+                bucket.getPath() +
+                '/objects/' + id;
+            var client = c.getNewClient();
+            client.setUrl(url);
+            client.setMethod('GET');
+            client.setKiiHeader(c, true);
+            client.setContentType('application/json');
+            var respObject;
+            client.send({
+                onReceive: function (status, headers, body) {
+                    if (callback === undefined) {
+                        respObject = new Kii.KiiObject(bucket, id, body);
+                        return;
+                    }
+                    if (callback.success === undefined) {
+                        return;
+                    }
+                    callback.success(new Kii.KiiObject(bucket, id, body));
+                },
+                onError: function (status, body) {
+                    if (callback === undefined) {
+                        throw new Error(body);
+                        return;
+                    }
+                    if (callback.error === undefined) {
+                        return;
+                    }
+                    callback.error(status, body);
+                }
+            });
+            return respObject;
+        };
         KiiObjectAPI.prototype.update = function (obj, callback) {
             var c = this.context;
-            var url = c.getServerUrl() + '/apps/' + c.getAppId() + obj.getPath();
-
+            var url = c.getServerUrl() +
+                '/apps/' + c.getAppId() +
+                obj.getPath();
             var client = c.getNewClient();
             client.setUrl(url);
             client.setMethod('PUT');
             client.setKiiHeader(c, true);
             client.setContentType('application/json');
-
             var respObject;
             client.sendJson(obj.data, {
                 onReceive: function (status, headers, body) {
@@ -1476,16 +1454,55 @@ var jquery;
             });
             return respObject;
         };
-
+        KiiObjectAPI.prototype.updatePatch = function (obj, patch, callback) {
+            var c = this.context;
+            var url = c.getServerUrl() +
+                '/apps/' + c.getAppId() +
+                obj.getPath();
+            var client = c.getNewClient();
+            client.setUrl(url);
+            client.setMethod('POST');
+            client.setKiiHeader(c, true);
+            client.setHeader('X-HTTP-Method-Override', 'PATCH');
+            client.setContentType('application/json');
+            var respObject;
+            client.sendJson(patch, {
+                onReceive: function (status, headers, body) {
+                    // apply patch
+                    for (var k in patch) {
+                        obj.data[k] = patch[k];
+                    }
+                    if (callback === undefined) {
+                        respObject = obj;
+                        return;
+                    }
+                    if (callback.success === undefined) {
+                        return;
+                    }
+                    callback.success(obj);
+                },
+                onError: function (status, body) {
+                    if (callback === undefined) {
+                        throw new Error(body);
+                        return;
+                    }
+                    if (callback.error === undefined) {
+                        return;
+                    }
+                    callback.error(status, body);
+                }
+            });
+            return respObject;
+        };
         KiiObjectAPI.prototype.deleteObject = function (obj, callback) {
             var c = this.context;
-            var url = c.getServerUrl() + '/apps/' + c.getAppId() + obj.getPath();
-
+            var url = c.getServerUrl() +
+                '/apps/' + c.getAppId() +
+                obj.getPath();
             var client = c.getNewClient();
             client.setUrl(url);
             client.setMethod('DELETE');
             client.setKiiHeader(c, true);
-
             client.send({
                 onReceive: function (status, headers, body) {
                     if (callback === undefined) {
@@ -1525,13 +1542,13 @@ var jquery;
         }
         KiiTopicAPI.prototype.create = function (topic, callback) {
             var c = this.context;
-            var url = c.getServerUrl() + '/apps/' + c.getAppId() + topic.getPath();
-
+            var url = c.getServerUrl() +
+                '/apps/' + c.getAppId() +
+                topic.getPath();
             var client = c.getNewClient();
             client.setUrl(url);
             client.setMethod('PUT');
             client.setKiiHeader(c, true);
-
             client.send({
                 onReceive: function (status, headers, body) {
                     if (callback === undefined) {
@@ -1554,17 +1571,17 @@ var jquery;
                 }
             });
         };
-
         KiiTopicAPI.prototype.sendMessage = function (topic, message, callback) {
             var c = this.context;
-            var url = c.getServerUrl() + '/apps/' + c.getAppId() + topic.getPath() + '/push/messages';
-
+            var url = c.getServerUrl() +
+                '/apps/' + c.getAppId() +
+                topic.getPath() +
+                '/push/messages';
             var client = c.getNewClient();
             client.setUrl(url);
             client.setMethod('POST');
             client.setContentType('application/vnd.kii.SendPushMessageRequest+json');
             client.setKiiHeader(c, true);
-
             client.sendJson(message.toJson(), {
                 onReceive: function (status, headers, body) {
                     if (callback === undefined) {
@@ -1605,20 +1622,20 @@ var jquery;
         KiiACLAPI.prototype.grant = function (target, verb, subject, callback) {
             this.exec('PUT', target, verb, subject, callback);
         };
-
         KiiACLAPI.prototype.revoke = function (target, verb, subject, callback) {
             this.exec('DELETE', target, verb, subject, callback);
         };
-
         KiiACLAPI.prototype.exec = function (method, target, verb, subject, callback) {
             var c = this.context;
-            var url = c.getServerUrl() + '/apps/' + c.getAppId() + target.getPath() + '/acl/' + verb + '/' + subject.getSubject();
-
+            var url = c.getServerUrl() +
+                '/apps/' + c.getAppId() +
+                target.getPath() +
+                '/acl/' + verb +
+                '/' + subject.getSubject();
             var client = c.getNewClient();
             client.setUrl(url);
             client.setMethod(method);
             client.setKiiHeader(c, true);
-
             client.send({
                 onReceive: function (status, headers, body) {
                     if (callback === undefined) {
@@ -1661,7 +1678,6 @@ var jquery;
     var KiiAppAPI = (function () {
         function KiiAppAPI(context) {
             this.context = context;
-
             this.userAPI_ = new Kii.KiiUserAPI(context);
             this.groupAPI_ = new Kii.KiiGroupAPI(context);
             this.bucketAPI_ = new Kii.KiiBucketAPI(context);
@@ -1675,44 +1691,42 @@ var jquery;
                 'password': password };
             if (callback === undefined) {
                 return this.execLogin(body);
-            } else {
+            }
+            else {
                 this.execLogin(body, callback);
             }
         };
-
         KiiAppAPI.prototype.loginWithLocalPhone = function (phone, country, password, callback) {
             var body = {
                 'username': 'PHONE:' + country + '-' + phone,
                 'password': password };
             if (callback === undefined) {
                 return this.execLogin(body);
-            } else {
+            }
+            else {
                 this.execLogin(body, callback);
             }
         };
-
         KiiAppAPI.prototype.loginAsAdmin = function (clientId, clientSecret, callback) {
             var body = {
                 'client_id': clientId,
                 'client_secret': clientSecret };
             if (callback === undefined) {
                 return this.execLogin(body);
-            } else {
+            }
+            else {
                 this.execLogin(body, callback);
             }
         };
-
         KiiAppAPI.prototype.execLogin = function (body, callback) {
             var _this = this;
             var c = this.context;
             var url = c.getServerUrl() + '/oauth2/token';
-
             var client = c.getNewClient();
             client.setUrl(url);
             client.setMethod('POST');
             client.setKiiHeader(c, false);
             client.setContentType('application/json');
-
             var respUser;
             var resp = client.sendJson(body, {
                 onReceive: function (status, headers, body) {
@@ -1741,19 +1755,17 @@ var jquery;
             });
             return respUser;
         };
-
         KiiAppAPI.prototype.signUp = function (info, password, callback) {
             info['password'] = password;
-
             var c = this.context;
-            var url = c.getServerUrl() + '/apps/' + c.getAppId() + '/users';
-
+            var url = c.getServerUrl() +
+                '/apps/' + c.getAppId() +
+                '/users';
             var client = c.getNewClient();
             client.setUrl(url);
             client.setMethod('POST');
             client.setKiiHeader(c, false);
             client.setContentType('application/json');
-
             var respUser;
             var resp = client.sendJson(info, {
                 onReceive: function (status, headers, body) {
@@ -1780,16 +1792,15 @@ var jquery;
             });
             return respUser;
         };
-
         KiiAppAPI.prototype.deleteUser = function (user, callback) {
             var c = this.context;
-            var url = c.getServerUrl() + '/apps/' + c.getAppId() + user.getPath();
-
+            var url = c.getServerUrl() +
+                '/apps/' + c.getAppId() +
+                user.getPath();
             var client = c.getNewClient();
             client.setUrl(url);
             client.setMethod('DELETE');
             client.setKiiHeader(c, true);
-
             client.send({
                 onReceive: function (status, headers, body) {
                     if (callback === undefined) {
@@ -1812,19 +1823,18 @@ var jquery;
                 }
             });
         };
-
         KiiAppAPI.prototype.sendEvent = function (event, callback) {
             var c = this.context;
-            var url = c.getServerUrl() + '/apps/' + c.getAppId() + '/events';
+            var url = c.getServerUrl() +
+                '/apps/' + c.getAppId() +
+                '/events';
             event.data['_deviceID'] = c.getDeviceId();
             event.data['_uploadedAt'] = new Date().getTime();
-
             var client = c.getNewClient();
             client.setUrl(url);
             client.setMethod('POST');
             client.setContentType('application/vnd.kii.Event+json');
             client.setKiiHeader(c, false);
-
             client.sendJson(event.data, {
                 onReceive: function (status, headers, body) {
                     if (callback === undefined) {
@@ -1847,28 +1857,22 @@ var jquery;
                 }
             });
         };
-
         // APIs
         KiiAppAPI.prototype.userAPI = function () {
             return this.userAPI_;
         };
-
         KiiAppAPI.prototype.groupAPI = function () {
             return this.groupAPI_;
         };
-
         KiiAppAPI.prototype.bucketAPI = function () {
             return this.bucketAPI_;
         };
-
         KiiAppAPI.prototype.objectAPI = function () {
             return this.objectAPI_;
         };
-
         KiiAppAPI.prototype.aclAPI = function () {
             return this.aclAPI_;
         };
-
         KiiAppAPI.prototype.topicAPI = function () {
             return this.topicAPI_;
         };
@@ -1876,3 +1880,6 @@ var jquery;
     })();
     Kii.KiiAppAPI = KiiAppAPI;
 })(Kii || (Kii = {}));
+if (typeof module != 'undefined' && module.exports) {
+  module.exports = Kii;
+}

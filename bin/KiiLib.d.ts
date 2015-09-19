@@ -66,6 +66,7 @@ declare module Kii {
         constructor(id: string);
         getId(): string;
         getPath(): string;
+        getSubject(): string;
     }
 }
 declare module Kii {
@@ -77,6 +78,7 @@ declare module Kii {
         constructor(id: string);
         removeMember(member: KiiUser): void;
         getPath(): string;
+        getSubject(): string;
     }
 }
 declare module Kii {
