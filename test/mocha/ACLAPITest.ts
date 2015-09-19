@@ -29,7 +29,28 @@ describe('ACLAPI', () => { it('grant', function() {
             assert.fail(1, 1, 'error status=' + status);
         }
     });
-});it('revoke', function() {
+});it('grant-group', function() {
+    var targetBucket : Kii.KiiBucket = new kii.KiiBucket(
+        new kii.KiiApp(), 'bucket1122');
+    var verb = 'QUERY_OBJECTS_IN_BUCKET';
+    var subject : Kii.KiiGroup = new kii.KiiGroup('group2233');
+    
+    var c : Kii.KiiContext = mock.newContext();
+    var client : MockClient = <MockClient>c.getNewClient();
+    client.respStatus = 204;
+    
+    var appAPI : Kii.AppAPI = new kii.KiiAppAPI(c);
+    appAPI.aclAPI().grant(targetBucket, verb, subject, {
+        success : () => {
+            assert.equal(client.url, 'https://api-jp.kii.com/api/apps/AppID/buckets/bucket1122/acl/QUERY_OBJECTS_IN_BUCKET/GroupID:group2233');
+            assert.equal(client.method, 'PUT');
+            assert.equal(client.contentType, null);
+        },
+        error : (status : number, body : any) => {
+            assert.fail(1, 1, 'error status=' + status);
+        }
+    });
+}); it('revoke', function() {
     var targetBucket : Kii.KiiBucket = new kii.KiiBucket(
         new kii.KiiApp(), 'bucket1122');
     var verb = 'QUERY_OBJECTS_IN_BUCKET';

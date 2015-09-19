@@ -171,6 +171,9 @@ var jquery;
         KiiGroup.prototype.getPath = function () {
             return '/groups/' + this.id;
         };
+        KiiGroup.prototype.getSubject = function () {
+            return 'GroupID:' + this.id;
+        };
         return KiiGroup;
     })();
     Kii.KiiGroup = KiiGroup;

@@ -24,6 +24,10 @@ module Kii {
 	
 	public getPath() {
 	    return '/groups/' + this.id;
-	}	
+	}
+
+        public getSubject() {
+            return 'GroupID:' + this.id;
+        }
     }
 }
