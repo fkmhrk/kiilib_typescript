@@ -1393,7 +1393,6 @@ var jquery;
             client.setUrl(url);
             client.setMethod('GET');
             client.setKiiHeader(c, true);
-            client.setContentType('application/json');
             var respObject;
             client.send({
                 onReceive: function (status, headers, body) {
