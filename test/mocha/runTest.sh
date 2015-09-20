@@ -1,4 +1,5 @@
 #!/bin/sh
 
 mocha --reporter spec AppAPITest.js \
-ACLAPITest.js
+    UserAPITest.js \
+    ACLAPITest.js
