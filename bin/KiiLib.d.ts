@@ -76,6 +76,7 @@ declare module Kii {
         owner: KiiUser;
         members: Array<KiiUser>;
         constructor(id: string);
+        getId(): string;
         removeMember(member: KiiUser): void;
         getPath(): string;
         getSubject(): string;

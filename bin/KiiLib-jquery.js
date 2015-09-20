@@ -155,6 +155,9 @@ var jquery;
             this.id = id;
             this.members = [];
         }
+        KiiGroup.prototype.getId = function () {
+            return this.id;
+        };
         KiiGroup.prototype.removeMember = function (member) {
             var index = -1;
             for (var i = 0; i < this.members.length; ++i) {
