@@ -277,6 +277,42 @@ module Kii {
             return respUser;
 	}
 
+        installDevice(user : KiiUser, os : string, token : string, development : boolean, callback? : KiiCallback) {
+	    var c : KiiContext = this.context;
+	    var url = c.getServerUrl() + 
+		'/apps/'+ c.getAppId() +
+		'/installations';
+	    var body = {
+		'installationRegistrationID' : token,
+                'deviceType' : os,
+	    };
+            if (user != null) {
+                body['userID'] = user.getId();
+            }
+	    
+	    var client = c.getNewClient();
+	    client.setUrl(url);
+	    client.setMethod('POST');
+	    client.setKiiHeader(c, true);
+            client.setContentType('application/vnd.kii.InstallationCreationRequest+json');
+
+	    client.sendJson(body, {
+	        onReceive : (status : number, headers : any, body : any) => {
+                    if (callback === undefined) { return; }
+		    if (callback.success === undefined) { return; }
+		    callback.success();
+		},
+		onError : (status : number, body : any) => {
+                    if (callback === undefined) {
+                        throw new Error(body);
+                        return;
+                    }
+		    if (callback.error === undefined) { return; }
+		    callback.error(status, body);
+		}		
+	    });
+	}
+
 	subscribe(user : KiiUser, target : any, callback? : KiiCallback) {
 	    var targetPath = target.getPath();
 	    if (targetPath.lastIndexOf('/buckets', 0) == 0) {

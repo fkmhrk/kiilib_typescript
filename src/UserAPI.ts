@@ -27,6 +27,9 @@ module Kii {
         verifyPhone(user : KiiUser, code : string) : KiiUser;
 	verifyPhone(user : KiiUser, code : string, callback : UserCallback);
 
+        installDevice(user : KiiUser, os : string, token : string, development : boolean) : void;
+        installDevice(user : KiiUser, os : string, token : string, development : boolean, callback : KiiCallback);
+
         subscribe(user : KiiUser, target : any);
 	subscribe(user : KiiUser, target : any, callback : KiiCallback);
 
