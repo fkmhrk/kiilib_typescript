@@ -294,8 +294,9 @@ module Kii {
 	    client.setUrl(url);
 	    client.setMethod('POST');
 	    client.setKiiHeader(c, true);
+            client.setContentType('application/vnd.kii.InstallationCreationRequest+json');
 
-	    client.send({
+	    client.sendJson(body, {
 	        onReceive : (status : number, headers : any, body : any) => {
                     if (callback === undefined) { return; }
 		    if (callback.success === undefined) { return; }
